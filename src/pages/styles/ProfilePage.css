@@ -1,0 +1,126 @@
+  /* Top Navigation Bar */
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 1rem 2rem;
+  }
+  
+  .profile-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #bbb;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  
+  .menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Main Content */
+  .main-content {
+    display: flex;
+    flex: 1;
+    padding: 2rem;
+    gap: 2rem;
+  }
+  
+  .piano-container {
+    flex: 2;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .piano-keys {
+    display: flex;
+    margin-top: 1rem;
+  }
+  
+  .white-key {
+    width: 30px;
+    height: 150px;
+    background-color: white;
+    border: 1px solid #333;
+  }
+  
+  .black-key {
+    width: 20px;
+    height: 100px;
+    background-color: black;
+    margin-left: -10px;
+    margin-right: -10px;
+    z-index: 1;
+    position: relative;
+  }
+  
+  .recorded-section {
+    flex: 1;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recorded-display {
+    height: 200px;
+    background-color: #e0e0e0;
+    border: 1px dashed #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Bottom Player */
+  .bottom-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+  }
+  
+  .record-button {
+    background-color: red;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .record-button:hover {
+    background-color: darkred;
+  }
+  
+  .playback-controls button {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .playback-controls button:hover {
+    background-color: #666;
+  }
+  
