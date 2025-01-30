@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, createElement, useRef } from 'react'
+import newKey from './ClickableDiv'
 import soundC from './../assets/middleC.mp3'
 import soundD from './../assets/middleD.mp3'
 import soundE from './../assets/middleE.mp3'
@@ -9,9 +10,11 @@ import soundB from './../assets/middleB.mp3'
 import soundC1 from './../assets/c1.mp3'
 import chordC from './../assets/c-chord.mp3'
 
+
 function Keyboard(){
 
     var [sound, setSound] = useState(null)
+    const [keys, setKeys] = useState(['div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div', 'div','div', 'div', 'div', 'div']);
     const [noteC0, setNoteC0] = useState({name: "C", sound: soundC, chord: chordC})
     const [noteD0, setNoteD0] = useState({name: "D", sound: soundD})
     const [noteE0, setNoteE0] = useState({name: "E", sound: soundE})
@@ -39,36 +42,21 @@ function Keyboard(){
         playNote(note, "chord");
     }
 
-    return(
-        <div>
-                <h1>Hello Piano</h1>
-                 <div className="keyboard">
-            <button onClick={() => playNote(noteC0)}>
-                {noteC0.name}
-            </button>
-            <button onClick={() => playNote(noteD0)}>
-                {noteD0.name}
-            </button>
-            <button onClick={() => playNote(noteE0)}>
-                {noteE0.name}
-            </button>
-            <button onClick={() => playNote(noteF0)}>
-                {noteF0.name}
-            </button>
-            <button onClick={() => playNote(noteG0)}>
-                {noteG0.name}
-            </button>
-            <button onClick={() => playNote(noteA0)}>
-                {noteA0.name}
-            </button>
-            <button onClick={() => playNote(noteB0)}>
-                {noteB0.name}
-            </button>
-            <button onClick={() => playNote(noteC1)}>
-                {noteC1.name}
-            </button>
+    function handleClick(){
+        console.log("test");
+    }
+
+    return (
+        <div className='piano-container'>
+            {
+                keys.map((el, index) => 
+                     createElement(
+                        el,
+                        { className: index < 10 ? "black-key" : "white-key" },
+                      )
+                )
+            }
         </div>
-        </div>
-    )
+    );
 }
 export default Keyboard

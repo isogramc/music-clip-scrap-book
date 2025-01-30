@@ -14,7 +14,7 @@ function App() {
 
         //play a middle 'C' for the duration of an 8th note
         const now = Tone.now();
-        //setInterval(() => console.log(now, 10);
+        
         // trigger the attack immediately
         synth.triggerAttackRelease("C4", "8n", now);
     }
