@@ -17,7 +17,6 @@ const notes = [
     const [player, setPlayer] = useState(null);
   
     useEffect(() => {
-      // Carrega o banco de sons com SoundFont
       Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano').then(instrument => {
         setPlayer(instrument);
       });
