@@ -10,7 +10,7 @@ function Keyboard(){
         <div className='piano-container'>
             {
                 keys.map((el, index) =>
-                    <NewKey key={index} index={index} keyClass={index < 10 ? "black-key" : "white-key"}/>
+                    <NewKey key={index} index={index} keyClass={index < 10 ? "tkb-black-key" : "tkb-white-key"}/>
                 )
             }
         </div>
