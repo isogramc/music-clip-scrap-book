@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Soundfont from 'soundfont-player';
 import './styles/ProfilePage.css';
+import Keyboard from './../components/Keyboard'
 
 const notes = [
     { note: 'C3', isBlack: false }, { note: 'C#3', isBlack: true }, { note: 'D3', isBlack: false },
@@ -73,6 +74,7 @@ const notes = [
         {/* Main Content */}
         <div className="main-content">
           {/* Left Side: Piano */}
+
           <div className="piano-container">
             <h2>Virtual Piano</h2>
             <div className="piano-keys">

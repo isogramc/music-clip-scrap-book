@@ -21,11 +21,11 @@ const ClickableDiv = ({ index, keyClass }) => {
             baseUrl: "https://tonejs.github.io/audio/salamander/",
         }).toDestination();
 
-        window.navigator.requestMIDIAccess().then(function (midiAccess) {
-            midiAccess.inputs.forEach(function (midiInput) {
-              clavinet.listenToMidi(sampler)
-            })
-        })
+        // window.navigator.requestMIDIAccess().then(function (midiAccess) {
+        //     midiAccess.inputs.forEach(function (midiInput) {
+        //       clavinet.listenToMidi(sampler)
+        //     })
+        // })
 
         async function handleClick(e){
             let note = e.target.id;

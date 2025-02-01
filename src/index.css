@@ -41,8 +41,9 @@ body {
   margin-bottom: 20px;
 }
 
-.piano-container {
+.tkb-piano-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   padding: 4em 1em 1em 1em;
   border-radius: 0.62em;
@@ -162,17 +163,17 @@ button:focus-visible {
 }
 
 @media screen and (max-width: 1000px) {
-  .piano-container {
+  .tkb-piano-container {
       font-size: 0.7em;
   }
 }
 @media screen and (max-width: 700px) {
-  .piano-container {
+  .tkb-piano-container {
       font-size: 0.5em;
   }
 }
 @media screen and (max-width: 500px) {
-  .piano-container {
+  .tkb-piano-container {
       font-size: 0.3em;
   }
 }

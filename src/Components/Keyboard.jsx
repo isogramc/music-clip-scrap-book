@@ -9,7 +9,7 @@ function Keyboard(){
     
 
     return (
-        <div className='piano-container'>
+        <div className='tkb-piano-container'>
             {
                 keys.map((el, index) =>
                     <NewKey key={index} index={index} keyClass={index < 10 ? "tkb-black-key" : "tkb-white-key"}/>
