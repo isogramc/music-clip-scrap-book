@@ -5,6 +5,8 @@ function Keyboard(){
 
     var [sound, setSound] = useState(null)
     const [keys, setKeys] = useState(Array(24).fill(null));
+    
+    
 
     return (
         <div className='piano-container'>

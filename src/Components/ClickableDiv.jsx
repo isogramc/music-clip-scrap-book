@@ -9,6 +9,7 @@ const ClickableDiv = ({ index, keyClass }) => {
 
 
     useEffect(() => {
+        
         const sampler = new Tone.Sampler({
             urls: {
                 "C4": "C4.mp3",
@@ -19,6 +20,12 @@ const ClickableDiv = ({ index, keyClass }) => {
             release: 1,
             baseUrl: "https://tonejs.github.io/audio/salamander/",
         }).toDestination();
+
+        window.navigator.requestMIDIAccess().then(function (midiAccess) {
+            midiAccess.inputs.forEach(function (midiInput) {
+              clavinet.listenToMidi(sampler)
+            })
+        })
 
         async function handleClick(e){
             let note = e.target.id;

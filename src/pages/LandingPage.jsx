@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/LandingPage.css';
+import ProjectsList from '../components/ProjectsList';
 
 
 function LandingPage() {
@@ -19,6 +20,7 @@ function LandingPage() {
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
         <p>Learn, play, and record your own melodies with our virtual piano.</p>
+        <ProjectsList/>
       </main>
       
       {/* Footer */}

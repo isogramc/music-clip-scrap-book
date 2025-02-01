@@ -14,19 +14,50 @@ const notes = [
   ];
   
   function ProfilePage() {
+    const songArr = [];
     const [player, setPlayer] = useState(null);
+    const [audio, setAudio] = useState(false);
+    const [track, setTrack] = useState(null);
+    const [song, setSong] = useState([ { time: 0, note: "F4"}, { time: 0.5, note: "G4"}, { time: 1, note: "G4"}, { time: 1.5, note: "F4"} ]);
   
     useEffect(() => {
       Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano').then(instrument => {
         setPlayer(instrument);
       });
     }, []);
+
+    useEffect(() => {
+      var ac = new AudioContext();
+      let time = ac.currentTime;
+      if(audio){
+        Soundfont.instrument(ac, 'acoustic_grand_piano').then(instrument => {
+          setTrack(instrument);
+
+          //track.schedule(ac.currentTime+5, [ { time: 0, note: "F4"}, { time: 0.5, note: "G4"}, { time: 1, note: "G4"}, { time: 1.5, note: "F4"} ]);
+
+          track.play('C4', ac.currentTime, { duration: 0.5})
+      
+        
+        });
+
+       
+      }
+    })
   
     const playNote = (note) => {
       if (player) {
+        songArr.push(note);
         player.play(note);
       }
     };
+
+    const handleRecord = () => {
+      setSong(songArr);
+    }
+
+    const handlePlay = () => {
+      setAudio(!audio);
+    }
   
     return (
       <div className="profile-page">
@@ -60,16 +91,16 @@ const notes = [
           {/* Right Side: Recorded Section */}
           <div className="recorded-section">
             <h3>Recorded Melody</h3>
-            <div className="recorded-display">[Recorded notes will appear here]</div>
+            <div className="recorded-display" placeholder="Recorded notes will appear here">{song.toString()}</div>
           </div>
         </div>
   
         {/* Bottom Player */}
         <div className="bottom-player">
-          <button className="record-button">Record</button>
+          <button className="record-button" onClick={handleRecord}>Record</button>
           <div className="playback-controls">
             <button>⏮️</button>
-            <button>▶️</button>
+            <button onClick={handlePlay}>▶️</button>
             <button>⏭️</button>
           </div>
         </div>
