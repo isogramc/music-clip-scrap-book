@@ -75,4 +75,20 @@ body {
     background-color: #333;
     color: white;
   }
+
+  .projectCard{
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+  }
+  .projectCard h1{
+    font-size: 20px;
+  }
+
+  .projectCard img{
+    width: 85px;
+    height: auto;
+  }
   

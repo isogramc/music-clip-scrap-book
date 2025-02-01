@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import ProjectCard from './ProjectCard'
 
 function ProjectsList(){
     const [projects, setProjects] = useState([]);
 
+    // this is the link to the LIVE SERVER
+    const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/projects`;
+    const local = "http://localhost:5005/projects";
+
     async function getProjects() {
         try {
-          return await axios({url: 'http://localhost:5005/projects', 
+          // change the link depending on the environment 
+          return await axios({url: local, 
             method: 'get',
             timeout: 8000,
             headers: {
@@ -19,24 +25,19 @@ function ProjectsList(){
       }
 
       useEffect(() => {
-        let dataObj;
         getProjects().then(function (result) {
-        console.dir(result.data); // Ooops, the result is undefined
-        setProjects(result.data);
+            console.log(result.data);
+            setProjects(result.data);
         });   
       }, [])
 
-    
+    if(projects.length===0){
+        return <div>...Loading</div>
+    }
 
     return (
-        <div>
-            {projects.map(project=>{
-                <div>
-                    <img src={project.image} alt="image for doodle"/>
-                    {project.title}
-                </div>
-            })
-            }
+        <div className="projectsList">
+             {projects.map(project => <ProjectCard key={project.id} image={project.image} title={project.title} />)} 
         </div>
     )
 }
