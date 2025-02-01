@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import ProjectCard from './ProjectCard'
+import './../App.css'
 
 function ProjectsList(){
     const [projects, setProjects] = useState([]);
@@ -36,8 +37,8 @@ function ProjectsList(){
     }
 
     return (
-        <div className="projectsList">
-             {projects.map(project => <ProjectCard key={project.id} image={project.image} title={project.title} />)} 
+        <div className="projects-list">
+             {projects.map(project => <ProjectCard key={project.id} image={project.image} title={project.title} description={project.description}/>)} 
         </div>
     )
 }
