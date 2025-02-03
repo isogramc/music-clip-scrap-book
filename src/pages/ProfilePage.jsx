@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Soundfont from 'soundfont-player';
 import './styles/ProfilePage.css';
-import Keyboard from './../components/Keyboard'
+import CreateProject from '../components/CreateProject';
+import ProjectsList from '../components/ProjectsList';
+import { nanoid } from 'nanoid';
+import ProjectsSelect from '../components/ProjectsSelect';
+import axios from 'axios';
 
 const notes = [
     { note: 'C3', isBlack: false }, { note: 'C#3', isBlack: true }, { note: 'D3', isBlack: false },
@@ -14,12 +18,21 @@ const notes = [
     { note: 'A4', isBlack: false }, { note: 'A#4', isBlack: true }, { note: 'B4', isBlack: false }
   ];
   
-  function ProfilePage() {
-    const songArr = [];
+  function ProfilePage(props) {
+    // this is the link to the LIVE SERVER
+    const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
+    const local = "http://localhost:5005/tracks";
+
+    const [showCreate, setShowCreate] = useState(false);
+    const [showRecord, setShowRecord] = useState(false);
     const [player, setPlayer] = useState(null);
     const [audio, setAudio] = useState(false);
     const [track, setTrack] = useState(null);
-    const [song, setSong] = useState([ { time: 0, note: "F4"}, { time: 0.5, note: "G4"}, { time: 1, note: "G4"}, { time: 1.5, note: "F4"} ]);
+    const [song, setSong] = useState([]);
+    const [currentUser, setCurrentUser] = useState(props.user.userId);
+    const [currentUserImage, setCurrentUserImage] = useState(props.user.image);
+    const [notesText, setNotesText] = useState("");
+    const [selectedProject, setSelectedProject] = useState("");
   
     useEffect(() => {
       Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano').then(instrument => {
@@ -27,37 +40,57 @@ const notes = [
       });
     }, []);
 
-    useEffect(() => {
-      var ac = new AudioContext();
-      let time = ac.currentTime;
-      if(audio){
-        Soundfont.instrument(ac, 'acoustic_grand_piano').then(instrument => {
-          setTrack(instrument);
-
-          //track.schedule(ac.currentTime+5, [ { time: 0, note: "F4"}, { time: 0.5, note: "G4"}, { time: 1, note: "G4"}, { time: 1.5, note: "F4"} ]);
-
-          track.play('C4', ac.currentTime, { duration: 0.5})
-      
-        
-        });
-
-       
-      }
-    })
+    const addNewTrackToProject = async (trackData) => {
+      console.log(trackData);
+      await axios.post(local, trackData).then(function (response) {
+        console.log(response);
+        setShowRecord(!showRecord);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
   
     const playNote = (note) => {
       if (player) {
-        songArr.push(note);
         player.play(note);
+        if(showRecord){
+          setNotesText([
+            ...notesText, 
+            note
+          ]);
+        }
       }
     };
 
+    const onChange = (e) => {
+      console.log("change", e.target.value);
+    }
+
     const handleRecord = () => {
-      setSong(songArr);
+      setShowRecord(!showRecord);
     }
 
     const handlePlay = () => {
       setAudio(!audio);
+    }
+    const createProject = () => {
+      setShowCreate(!showCreate);
+    }
+
+    const save = () => {
+      let instructions = prompt("Any instructions?", "left-hand");
+      const track = {
+        id: nanoid(),
+        instructions: instructions,
+        notes: notesText,
+        projectId: selectedProject,
+      }
+      addNewTrackToProject(track);
+    }
+
+    const selectProject = (id) => {
+      console.log(id);
+      setSelectedProject(id)
     }
   
     return (
@@ -65,7 +98,7 @@ const notes = [
         {/* Top Navigation Bar */}
         <nav className="top-nav">
           <div className="profile-section">
-            <div className="profile-circle"></div>
+            <div className="profile-circle"><img src={currentUserImage} alt="user's profile pic" style={{width: '50px', borderRadius: "50%"}}/></div>
             <div className="menu-icon">&#9776;</div>
           </div>
           <div className="logo">Piano App</div>
@@ -74,6 +107,9 @@ const notes = [
         {/* Main Content */}
         <div className="main-content">
           {/* Left Side: Piano */}
+          {/* User Id: {currentUser}  | Currently Working on project: {selectedProject} */}
+
+          <ProjectsList params={{userId: currentUser}}/>
 
           <div className="piano-container">
             <h2>Virtual Piano</h2>
@@ -88,23 +124,31 @@ const notes = [
                 </div>
               ))}
             </div>
+          
           </div>
-  
-          {/* Right Side: Recorded Section */}
-          <div className="recorded-section">
-            <h3>Recorded Melody</h3>
-            <div className="recorded-display" placeholder="Recorded notes will appear here">{song.toString()}</div>
-          </div>
+            {/* Right Side: Recorded Section */}
+           {showRecord && <div className="recorded-section">
+              <h3>Recorded Melody</h3>
+              <textarea value={notesText} onChange={onChange} className="recorded-display"></textarea>
+              <button onClick={save}>Save</button>
+            </div>}
         </div>
+
+        {showCreate && <CreateProject userId={currentUser} /> }
   
         {/* Bottom Player */}
         <div className="bottom-player">
-          <button className="record-button" onClick={handleRecord}>Record</button>
-          <div className="playback-controls">
-            <button>⏮️</button>
-            <button onClick={handlePlay}>▶️</button>
-            <button>⏭️</button>
-          </div>
+          <button className="create-project" onClick={createProject}>New Song</button>
+          {!selectedProject && <label>Please select a project to work on:</label>}
+          <ProjectsSelect selectProject={selectProject} params={{userId: currentUser}}/>
+          {selectedProject && (<div>
+            <button className="record-button" onClick={handleRecord}>Record</button>
+              <div className="playback-controls">
+                <button>⏮️</button>
+                <button onClick={handlePlay}>▶️</button>
+                <button>⏭️</button>
+              </div>
+            </div>)}
         </div>
       </div>
     );

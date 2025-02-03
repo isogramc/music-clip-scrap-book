@@ -76,5 +76,44 @@ body {
     color: white;
   }
 
+  .project-list{
+    height: 250px;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .project-card{
+    width: 600px;
+    height: 200px;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .project-card img{
+    z-index: 1;
+    width:600px;
+  }
+  
+  .project-card-info{
+    position: absolute;
+    z-index: 1000;
+  }
+  
+  .project-card h1{   
+    font-size: 20px;
+  }
+  
+  .project-card p{
+    font-size: 12px;
+  }
+
+
+ 
 
   

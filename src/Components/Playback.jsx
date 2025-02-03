@@ -18,11 +18,12 @@ function Playback({ playSong }){
     const playRef = useRef(null);
     const [song, setSong] = useState([]);
 
-    useEffect(()=>{
-        if(playSong?.length>0){
-            console.log(playSong)
+    useEffect(() => {
+        if(playSong?.notes?.length>0){
+            console.log(playSong);
             setSong(playSong);
         }
+
         const play = playRef.current;
 
         if (play) {
@@ -37,16 +38,18 @@ function Playback({ playSong }){
         };
     })
 
-
     async function handleClick () {
         const now = Tone.now();
         let noteLength = 0;
         console.log(song.notes);
         console.log(song.instructions);
-        for(let i=0; i<song.notes.length; i++){
-             //play a note every quarter-note in succession
-            samplerA.triggerAttackRelease(song[i], "8n", now + noteLength);
-            noteLength += 0.5;
+        if(song.notes?.length>0){
+            for(let i=0; i<song.notes.length; i++){
+                console.log(song.notes[i]);
+                 //play a note every quarter-note in succession
+                samplerA.triggerAttackRelease(song.notes[i], "8n", now + noteLength);
+                noteLength += 0.5;
+            }
         }
         // still testing with loops: example here
         // const loopA = new Tone.Loop((time) => {
@@ -61,7 +64,7 @@ function Playback({ playSong }){
     Tone.getTransport().stop();
   }
 
-  if(playSong?.length===0){
+  if(playSong?.notes?.length===0){
     return <div> ...Loading </div>
   }
 
