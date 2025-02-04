@@ -1,21 +1,55 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./styles/LandingPage.css";
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/LandingPage.css';
 import ProjectsList from '../components/ProjectsList';
 
-
 function LandingPage() {
+  const [showLogin, setShowLogin] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await axios.get("http://localhost:5005/users");
+      const user = response.data.find(
+        (u) => u.email === email && u.password === password
+      );
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/profile");
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch (err) {
+      setError("Login failed. Please try again.");
+    }
+  };
+
   return (
     <div className="landing-container">
       {/* Navbar */}
       <nav className="navbar">
         <div className="logo">Piano App</div>
         <div className="nav-links">
-          <Link to="/login" className="login-btn">Login</Link>
-          <Link to="/profile" className="profile-btn">Profile</Link>
+          <button onClick={() => setShowLogin(true)} className="login-btn">
+            Login
+          </button>
+          <Link to="/profile" className="profile-btn">
+            Profile
+          </Link>
         </div>
       </nav>
-      
+
       {/* Main Content */}
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
@@ -24,12 +58,45 @@ function LandingPage() {
           <ProjectsList />
         </div>
       </main>
-      
+
       {/* Footer */}
       <footer className="footer">
         <Link to="/about">About</Link>
         <Link to="/contact">Contact</Link>
       </footer>
+
+      {/* Login Pop-up */}
+      {showLogin && (
+        <div
+          className="login-popup-overlay"
+          onClick={() => setShowLogin(false)}
+        >
+          <div className="login-popup" onClick={(e) => e.stopPropagation()}>
+            <h2>Login</h2>
+            <form onSubmit={handleLogin} className="login-form">
+              <input
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button type="submit">Login</button>
+            </form>
+            {error && <p className="error-message">{error}</p>}
+            <p className="signup-option">
+              Don't have an account? <a href="/signup">Sign up here</a>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

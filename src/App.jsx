@@ -3,6 +3,7 @@ import React , {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
+import SignUpPage from './pages/SignUpPage';
 import ProfilePageKeys from './pages/ProfilePageKeys';
 // import LoginPage from './pages/LoginPage';
 // import AboutPage from './pages/AboutPage';
@@ -15,6 +16,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        {/*<Route path="/about" element={<AboutPage />} />
         <Route path="/profile" element={<ProfilePage user={user}/>} />
         <Route path="/profile-keys/:songId" element={<ProfilePageKeys user={user}/>} />
         {/* <Route path="/login" element={<LoginPage />} />
