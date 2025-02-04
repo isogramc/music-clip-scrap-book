@@ -10,5 +10,45 @@ body {
     align-items: center;
     height: 100vh;
   }
+  .contains-proj-list{
+    position: relative;
+    height: 300px;
+    overflow-y: scroll;
+  }
   
+  .project-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+  }
+  
+  .project-card{
+    width: 600px;
+    height: 150px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .project-card-info{
+   position: absolute;
+  }
+  .project-card img{
+    width:600px;
+  }
+  
+  .project-card h1{   
+    color: snow;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+    font-size: 20px;
+  }
+  
+  .project-card p{
+    color:blanchedalmond;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+    font-size: 12px;
+  } 
   
