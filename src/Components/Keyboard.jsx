@@ -1,13 +1,10 @@
-import { useState, createElement, useRef } from 'react'
+import { useState } from 'react'
 import NewKey from './ClickableDiv'
 
-function Keyboard(){
+function Keyboard(props){
 
-    var [sound, setSound] = useState(null)
     const [keys, setKeys] = useState(Array(24).fill(null));
     
-    
-
     return (
         <div className='tkb-piano-container'>
             {

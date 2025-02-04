@@ -20,7 +20,9 @@ function LandingPage() {
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
         <p>Learn, play, and record your own melodies with our virtual piano.</p>
-        <ProjectsList />
+        <div className='contains-proj-list'>
+          <ProjectsList />
+        </div>
       </main>
       
       {/* Footer */}
