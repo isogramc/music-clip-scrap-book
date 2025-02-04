@@ -60,7 +60,7 @@ const ClickableDiv = ({ index, keyClass }) => {
             }
          
             await Tone.loaded().then(() => {
-                console.log("key", key);
+                console.log("index", this.id, "key", key);
                 sampler.triggerAttackRelease(key, 1.2);
             });
         };

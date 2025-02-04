@@ -2,45 +2,34 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function CreateProject(props){
-    const navigate = useNavigate();
-    const { userId } = props;
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        image: "",
-        duration: 0,
-        genre: ""
-    });
+function EditProject({songId, title, description, image, duration, genre}){
+    console.log(songId, title, description, image, duration, genre);
 
-     // this is the link to the LIVE SERVER
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
-     const local = "http://localhost:3000/songs";
+    // this is the link to the LIVE SERVER
+    const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs/${songId}`;
+    const local = `http://localhost:3000/songs/${songId}`;
+
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        title: title,
+        description: description,
+        image: image,
+        duration: duration,
+        genre: genre
+    });
+     
 
      const create = (e) => {
         e.preventDefault();
 
-        const dataObj = {
-            ...formData,
-            userId: userId!==undefined?userId:2,
-        }
-
-        makePost(dataObj);
-
-        setFormData({
-            title: "",
-            description: "",
-            image: "",
-            duration: 0,
-            genre: ""
-        });
+        makePost(formData);
         
-        navigate("/profile");
+        navigate(`/profile-keys${songId}`);
     }
 
 
     const makePost = async (data) => {
-        await axios.post(local, data).then(function (response) {
+        await axios.put(local, data).then(function (response) {
             console.log(response);
         }).catch(function (error) {
             console.log(error);
@@ -58,7 +47,7 @@ function CreateProject(props){
     }
 
     return (
-        <form onSubmit={create} className="create-form">
+        <form onSubmit={create} className="edit-form">
             <label htmlFor="title" className="cp-label">Title</label>
             <input name="title" type="text" value={formData.title} onChange={handleChange} className="cp-input"/>
             <label htmlFor="description" className="cp-label">Description</label>
@@ -68,8 +57,8 @@ function CreateProject(props){
             <input name="image" type="text" value={formData.image} onChange={handleChange} className="cp-input"/>
             <label htmlFor="genre" className="cp-label">Genre</label>
             <input name="genre" type="text" value={formData.genre} onChange={handleChange} className="cp-input"/>
-            <input type="submit" value="Create"/>
+            <input type="submit" value="Edit"/>
         </form>
     )
 }
-export default CreateProject
+export default EditProject

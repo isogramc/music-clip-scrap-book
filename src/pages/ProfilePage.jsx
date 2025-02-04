@@ -3,7 +3,6 @@ import Soundfont from 'soundfont-player';
 import './styles/ProfilePage.css';
 import CreateProject from '../components/CreateProject';
 import ProjectsList from '../components/ProjectsList';
-import { nanoid } from 'nanoid';
 import ProjectsSelect from '../components/ProjectsSelect';
 import axios from 'axios';
 
@@ -21,7 +20,7 @@ const notes = [
   function ProfilePage(props) {
     // this is the link to the LIVE SERVER
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
-    const local = "http://localhost:5005/tracks";
+    const local = "http://localhost:3000/tracks";
 
     const [showCreate, setShowCreate] = useState(false);
     const [showRecord, setShowRecord] = useState(false);
@@ -78,12 +77,12 @@ const notes = [
     }
 
     const save = () => {
-      let instructions = prompt("Any instructions?", "left-hand");
+      console.log("track added to -> ", selectedProject);
+      let instructions = prompt("Any instructions to add?", "left-hand");
       const track = {
-        id: nanoid(),
         instructions: instructions,
         notes: notesText,
-        projectId: selectedProject,
+        songId: selectedProject,
       }
       addNewTrackToProject(track);
     }
@@ -107,9 +106,11 @@ const notes = [
         {/* Main Content */}
         <div className="main-content">
           {/* Left Side: Piano */}
-          {/* User Id: {currentUser}  | Currently Working on project: {selectedProject} */}
-
+        <div className='contains-proj-list'>
           <ProjectsList params={{userId: currentUser}}/>
+        </div>
+
+         User Id: {currentUser}  | Currently Working on project: {selectedProject}
 
           <div className="piano-container">
             <h2>Virtual Piano</h2>
@@ -138,7 +139,7 @@ const notes = [
   
         {/* Bottom Player */}
         <div className="bottom-player">
-          <button className="create-project" onClick={createProject}>New Song</button>
+          <button className="create-project" onClick={createProject}>{showCreate?"Return":"New Song"}</button>
           {!selectedProject && <label>Please select a project to work on:</label>}
           <ProjectsSelect selectProject={selectProject} params={{userId: currentUser}}/>
           {selectedProject && (<div>

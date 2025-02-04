@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/profile" element={<ProfilePage user={user}/>} />
-        <Route path="/profile-keys" element={<ProfilePageKeys/>} />
+        <Route path="/profile-keys/:songId" element={<ProfilePageKeys user={user}/>} />
         {/* <Route path="/login" element={<LoginPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />*/}

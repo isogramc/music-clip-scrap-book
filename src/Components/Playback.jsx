@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react"
 import * as Tone from "tone";
 import songfile from './../assets/soundfile.svg'
+import play from './../assets/play.svg'
+import stop from './../assets/stop.svg'
 
 function Playback({ playSong }){
    
@@ -68,16 +70,27 @@ function Playback({ playSong }){
     return <div> ...Loading </div>
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    console.log("deleting", playSong.id);
+    `TODO: handle delete track `
+  }
+
     return (
-    <div>
+    <div style={{display: 'flex', flexDirection: "column", justifyItems: 'center', padding: "5px"}}>
         <h3>{playSong.instructions}</h3>
-        <div className="song-display"><img src={songfile} alt="soundfile" style={{width: '55px'}}/></div>
-        <button ref={playRef}>
-            Play
-        </button>
-        <button onClick={handleStop}>
-            Stop
-        </button>
+        <div style={{textAlign:"center"}}><img src={songfile} alt="soundfile" style={{width: '55px'}}/></div>
+        <div style={{display: "flex", justifySelf: 'center', alignItems: "center"}}>
+            <button style={{borderRadius: "50%", width: "50px", height: '50px', margin:0, padding:0}} ref={playRef}>
+                <img style={{width: "50px", height: '50px', marginLeft: "-1px", marginTop: "-1px"}} src={play} alt="play"/>
+            </button>
+            <button style={{borderRadius: "50%", width: "50px", height: '50px', margin:0, padding:"10px"}} onClick={handleStop}>
+                <img style={{width: "40px", height: "40px", marginLeft: "-6px", marginTop: "-6px"}} src={stop} alt="stop"/>
+            </button>
+            <button style={{borderRadius: "50%", width: "50px", height: '50px', margin:0, padding:"5px"}} onClick={handleStop}>
+                <div onClick={handleDelete} style={{color: 'red', borderRadius: "50%", border: "3px solid white",  width: "25px", height: '25px', padding: "4px", lineHeight: 0.8, fontSize: "25px"}}>x</div>
+            </button>
+        </div>
     </div>
     )
 }
