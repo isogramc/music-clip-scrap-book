@@ -20,7 +20,7 @@ const notes = [
   function ProfilePage(props) {
     // this is the link to the LIVE SERVER
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
-    const local = "http://localhost:3000/tracks";
+    const local = "http://localhost:5005/tracks";
 
     const [showCreate, setShowCreate] = useState(false);
     const [showRecord, setShowRecord] = useState(false);

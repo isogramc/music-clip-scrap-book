@@ -82,7 +82,7 @@ function PlaybackKeyboard({track}){
         // const loopA = new Tone.Loop((time) => {
         // }, "4n").start(0);
       
-        //await Tone.loaded().then(() => {
+        await Tone.loaded().then(() => {
 
             if(track?.notes?.length>0){
                 console.log(track.notes);
@@ -108,7 +108,7 @@ function PlaybackKeyboard({track}){
 
             Tone.getTransport().start();
            
-        //})
+        })
         // tone can also ramp up your bpm e.g. to 800 bpm over 10 seconds
         // Tone.getTransport().bpm.rampTo(800, 10);
     }
