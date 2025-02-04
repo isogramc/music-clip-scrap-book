@@ -7,6 +7,7 @@ function SignUpPage() {
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
+  const [image, setImage] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function SignUpPage() {
       const newUser = {
         email,
         fullName,
+        image, 
         password,
       };
 
@@ -60,6 +62,13 @@ function SignUpPage() {
           placeholder="Full Name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
+          required
+        />
+         <input
+          type="text"
+          placeholder="Image"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
           required
         />
         <input
