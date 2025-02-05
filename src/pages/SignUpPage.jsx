@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles/SignUpPage.css';
@@ -7,9 +7,16 @@ function SignUpPage() {
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (email) {
+      setAvatarUrl(`https://robohash.org/${encodeURIComponent(email)}.png?size=200x200`);
+    }
+  }, [email]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -26,10 +33,12 @@ function SignUpPage() {
         return;
       }
 
+      
       // Create new user object
       const newUser = {
         email,
         fullName,
+        image: avatarUrl, 
         password,
       };
 
@@ -48,6 +57,11 @@ function SignUpPage() {
     <div className="signup-page">
       <h2>Sign Up</h2>
       <form onSubmit={handleSignUp} className="signup-form">
+      {avatarUrl && (
+        <div className="avatar-preview">
+          <img src={avatarUrl} alt="Avatar Preview"/>
+        </div>
+      )}
         <input
           type="email"
           placeholder="Enter Email"

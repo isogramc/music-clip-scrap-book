@@ -10,7 +10,7 @@ function ProjectsList(props){
 
      // this is the link to the LIVE SERVER
      const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
-     const local = "http://localhost:3000/songs";
+     const local = "http://localhost:5005/songs";
  
      const handleDelete = async (id) => {
       // change the link depending on the environment 
