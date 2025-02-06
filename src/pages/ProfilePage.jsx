@@ -4,6 +4,7 @@ import './styles/ProfilePage.css';
 import CreateProject from '../components/CreateProject';
 import ProjectsList from '../components/ProjectsList';
 import ProjectsSelect from '../components/ProjectsSelect';
+import Profile from '../components/Profile';
 import axios from 'axios';
 
 const notes = [
@@ -17,20 +18,44 @@ const notes = [
     { note: 'A4', isBlack: false }, { note: 'A#4', isBlack: true }, { note: 'B4', isBlack: false }
   ];
   
-  function ProfilePage(props) {
+  function ProfilePage({ userId, image, fullName }) {
     // this is the link to the LIVE SERVER
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
-    const local = "http://localhost:3000/tracks";
+    const local = "http://localhost:5005/tracks";
     const [showCreate, setShowCreate] = useState(false);
     const [showRecord, setShowRecord] = useState(false);
     const [player, setPlayer] = useState(null);
     const [audio, setAudio] = useState(false);
     const [track, setTrack] = useState(null);
     const [song, setSong] = useState([]);
-    const [currentUser, setCurrentUser] = useState(props.user.userId);
-    const [currentUserImage, setCurrentUserImage] = useState(props.user.image);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUserImage, setCurrentUserImage] = useState('');
     const [notesText, setNotesText] = useState("");
     const [selectedProject, setSelectedProject] = useState("");
+
+
+    useEffect(() => {
+      if (!userId) {
+        console.error('userId is not defined');
+        return;
+      }
+  
+      // Fetch user from backend API using userId prop
+      const fetchUser = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5005/users/${userId}`);
+          console.log('User data:', response.data); // Debug log
+          setCurrentUser(response.data);
+          setCurrentUserImage(response.data.image);
+          console.log('User image URL:', response.data.image); // Debug log
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+  
+      fetchUser();
+    }, [userId]);
+
   
     useEffect(() => {
       Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano').then(instrument => {
@@ -94,13 +119,32 @@ const notes = [
     return (
       <div className="profile-page">
         {/* Top Navigation Bar */}
+        
         <nav className="top-nav">
-          <div className="profile-section">
-            <div className="profile-circle"><img src={currentUserImage} alt="user's profile pic" style={{width: '50px', borderRadius: "50%"}}/></div>
-            <div className="menu-icon">&#9776;</div>
+        <div className="profile-section">
+          <div className="profile-circle">
+            <img
+              src={image}
+              alt="User's profile"
+              style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'default-image-url'; // Default image on error
+              }}
+            />
           </div>
-          <div className="logo">Piano App</div>
-        </nav>
+        </div>
+
+        {/* Center: Logo */}
+        <div className="logo">
+          
+        </div>
+
+        {/* Right: Welcome message */}
+        <div className="welcome-message">
+          <p>Welcome {fullName}</p>
+        </div>
+      </nav>
   
         {/* Main Content */}
         <div className="main-content">
@@ -109,7 +153,7 @@ const notes = [
           <ProjectsList params={{userId: currentUser}}/>
         </div>
 
-         User Id: {currentUser}  | Currently Working on project: {selectedProject}
+         {fullName}  | Currently Working on project: {selectedProject}
 
           <div className="piano-container">
             <h2>Virtual Piano</h2>

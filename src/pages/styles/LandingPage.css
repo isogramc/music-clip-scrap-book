@@ -17,14 +17,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #cfcaca;
     padding: 1rem 2rem;
     color: white;
   }
   
   .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
+  width: 90px;  
+  height: 58px; 
+  background-image: url('/src/assets/PianoApp.png'); 
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px; 
   }
   
   .nav-links {
@@ -89,6 +93,8 @@ body {
     align-items: center;
   }
   
+ 
+
   .login-popup {
     background: white;
     padding: 2rem;

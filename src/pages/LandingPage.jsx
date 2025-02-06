@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ProjectsList from "../components/ProjectsList";
 import "./styles/LandingPage.css";
-import ProjectsList from '../components/ProjectsList';
 
 function LandingPage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -22,8 +22,7 @@ function LandingPage() {
       );
 
       if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/profile");
+        navigate("/profile", { state: { userId: user.id } });
       } else {
         setError("Invalid email or password.");
       }
@@ -32,11 +31,19 @@ function LandingPage() {
     }
   };
 
+  const closeLoginPopup = () => {
+    setShowLogin(false);
+    setEmail("");
+    setPassword("");
+    setError("");
+
+  };
+
   return (
     <div className="landing-container">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="logo">Piano App</div>
+        <div className="logo"></div>
         <div className="nav-links">
           <button onClick={() => setShowLogin(true)} className="login-btn">
             Login
@@ -51,7 +58,7 @@ function LandingPage() {
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
         <p>Learn, play, and record your own melodies with our virtual piano.</p>
-        <div className='contains-proj-list'>
+        <div className="contains-proj-list">
           <ProjectsList />
         </div>
       </main>
@@ -64,11 +71,9 @@ function LandingPage() {
 
       {/* Login Pop-up */}
       {showLogin && (
-        <div
-          className="login-popup-overlay"
-          onClick={() => setShowLogin(false)}
-        >
+        <div className="login-popup-overlay" onClick={() => setShowLogin(false)}>
           <div className="login-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeLoginPopup}>X</button>
             <h2>Login</h2>
             <form onSubmit={handleLogin} className="login-form">
               <input
@@ -89,7 +94,7 @@ function LandingPage() {
             </form>
             {error && <p className="error-message">{error}</p>}
             <p className="signup-option">
-              Don't have an account? <a href="/signup">Sign up here</a>
+              Don't have an account? <Link to="/signup">Sign up here</Link>
             </p>
           </div>
         </div>
@@ -97,5 +102,6 @@ function LandingPage() {
     </div>
   );
 }
+
 
 export default LandingPage;
