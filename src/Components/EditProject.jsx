@@ -7,9 +7,10 @@ function EditProject({songId, title, description, image, duration, genre}){
 
     // this is the link to the LIVE SERVER
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs/${songId}`;
-    const local = `http://localhost:5005/songs/${songId}`;
+    const local = `http://localhost:3000/songs/${songId}`;
 
     const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         title: title,
         description: description,
@@ -24,7 +25,7 @@ function EditProject({songId, title, description, image, duration, genre}){
 
         makePost(formData);
         
-        navigate(`/profile-keys${songId}`);
+        navigate('/profile-keys/'+songId);
     }
 
 

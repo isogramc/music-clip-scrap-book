@@ -1,18 +1,19 @@
 import { useState, useEffect, useRef, createRef, useMemo } from 'react'
+import { useNavigate } from "react-router-dom";
 import play from './../assets/play.svg'
 import * as Tone from "tone";
 
-function PlaybackKeyboard({track}){
+function PlaybackKeyboard({ track }){
     const [keys, setKeys] = useState(Array(24).fill(null));
-    const [position, setPosition] = useState(4);
+    // set position of keyboard here - middle C is C4. Lower keyboard by decrementing (limit 0). Increase pitch for higher (limit 9)
+    const [position, setPosition] = useState(3);
     const [lowerRegNotes, setLowerRegNotes] = useState(["C", "D", "E", "F", "G", "A", "B"]);
     const [upperRegNotes, setUpperRegNotes] = useState(["C#", "Eb", "F#", "G#", "Bb"]);
-    const playRef = useRef(null);
+    const [trackNotes, setTrackNotes] = useState([]);
+    const [trackPositions, setTrackPositions] = useState([]);
+    const [duration, setDuration] = useState(0);
+     const playRef = useRef(null);
     const [colours, setColours] = useState(["red", "blue", "green", "pink", "yellow", "orange", "purple", "cornflowerblue"]);
-    const list = ["divRef1", "divRef2", "divRef3", "divRef4", "divRef5", "divRef6", "divRef7", "divRef8", "divRef9", "divRef10", 
-        "divRef11", "divRef12", "divRef13", "divRef14", "divRef15", "divRef16", "divRef17", "divRef18", "divRef19", "divRef20",
-        "divRef21", "divRef22", "divRef23", "divRef24"];
-    const elementsRef = useRef(list.map(() => createRef()));
 
     const refsById = useMemo(() => {
 		const refs = {}
@@ -26,6 +27,9 @@ function PlaybackKeyboard({track}){
         const random = Math.floor(Math.random() * colours.length);
         el.style.backgroundColor = colours[random];
     }
+    const removeColor = (el) => {
+        el.style.backgroundColor = 'white';
+    }
 
     const sampler = new Tone.Sampler({
         urls: {
@@ -38,18 +42,25 @@ function PlaybackKeyboard({track}){
         baseUrl: "https://tonejs.github.io/audio/salamander/",
     }).toDestination();
 
-    const samplerA = new Tone.Sampler({
-        urls: {
-            "C4": "C4.mp3",
-            "D#4": "Ds4.mp3",
-            "F#4": "Fs4.mp3",
-            "A4": "A4.mp3",
-        },
-        release: 1,
-        baseUrl: "https://tonejs.github.io/audio/salamander/",
-    }).toDestination();
+    //uncomment for playaable keyboard: note - it is not recommended to have playing and playable keyboard at once
+    // const samplerA = new Tone.Sampler({
+    //     urls: {
+    //         "C4": "C4.mp3",
+    //         "D#4": "Ds4.mp3",
+    //         "F#4": "Fs4.mp3",
+    //         "A4": "A4.mp3",
+    //     },
+    //     release: 1,
+    //     baseUrl: "https://tonejs.github.io/audio/salamander/",
+    // }).toDestination();
+
+
 
     useEffect(() => {
+        setTrackNotes(track?.notes);
+        setTrackPositions(track?.notesPositions);
+        setDuration(track?.duration)
+        console.log("working", trackNotes, trackPositions);
         const play = playRef.current;
 
         if (play) {
@@ -62,66 +73,92 @@ function PlaybackKeyboard({track}){
                 play.removeEventListener('click', playSong);
             }
         };
+       
+    }, [track]);
 
-    }, []);
 
+    //uncomment for playaable keyboard: note - it is not recommended to have playing and playable keyboard at once
+    // async function playNote(e){
+    //     //console.log(e.target.id, e.target.getAttribute(['data-position']))
+    //     await Tone.loaded().then(() => {
+    //          let note = e.target.id;
+    //          let position = e.target.getAttribute(['data-position']);
+    //          console.log(note+position);
+    //          samplerA.triggerAttackRelease(note+position, 1.2);
+    //      });
+    // }   
 
-     async function playNote(e){
-        //console.log(e.target.id, e.target.getAttribute(['data-position']))
-        await Tone.loaded().then(() => {
-             let note = e.target.id;
-             let position = e.target.getAttribute(['data-position']);
-             console.log(note+position);
-             samplerA.triggerAttackRelease(note+position, 1.2);
-         });
-    }   
 
     const playSong = async ()=>{
-   
+       
         // still testing with loops: example here
         // const loopA = new Tone.Loop((time) => {
         // }, "4n").start(0);
-      
-        await Tone.loaded().then(() => {
 
-            if(track?.notes?.length>0){
-                console.log(track.notes);
-            }
+         await Tone.loaded().then(() => {
             const now = Tone.now();
-            let noteLength = 0;
-            if(track?.notes?.length>0){
-                for(let i=0; i<track.notes.length; i++){
-                    console.log(track.notes[i]);
-                     //play a note every quarter-note in succession
-                    sampler.triggerAttackRelease(track.notes[i], "8n", now + noteLength);
-                    
-                   let indexi = 10+i;
-                   console.log(indexi);
-                    let element = refsById["divRef"+indexi].current;
-                    if(element){       
-                        changeColor(element);
-                    }
-                   
-                    noteLength += 0.5;
-                }
-            }
 
+            // use the time argument to schedule a callback with Draw
+            
+            let noteLength = 0;
+            let done = false;
+
+                for(let i=0; i<trackNotes.length; i++){
+
+                    console.log(trackNotes[i]);
+                     //play a note every quarter-note in succession
+                    sampler.triggerAttackRelease(trackNotes[i], "8n", now + noteLength);
+                    let time = now + noteLength; // sync drawing with player
+                    //Tone.debug();
+                    Tone.Draw.schedule(() => {
+                        let element = refsById["divRef"+trackPositions[i]].current;
+                        if(trackPositions[i-1]!==undefined){
+                            let prevElement = refsById["divRef"+trackPositions[i-1]].current;
+                            removeColor(prevElement);
+                        }
+                        if(element){       
+                            changeColor(element);
+                        }
+                        console.log(Math.round(time+0.5), Math.round(now+duration)); 
+
+                        if(Math.round(time+0.5) === Math.round(now+duration)){  
+                            done = true;
+                            console.log("Song has ended");
+                        }
+
+                        if(done){
+                            setTimeout(function () {
+                                let lastColour = refsById["divRef"+trackPositions[trackPositions.length-1]].current;
+                                console.log(lastColour);
+                                removeColor(lastColour);
+                            }, 1000);
+                        }
+                    }, time);
+                  
+                    noteLength += 0.5;
+                   
+                }
+      
             Tone.getTransport().start();
-           
+            // tone can also ramp up your bpm e.g. to 800 bpm over 10 seconds
+            // Tone.getTransport().bpm.rampTo(800, 10)
         })
-        // tone can also ramp up your bpm e.g. to 800 bpm over 10 seconds
-        // Tone.getTransport().bpm.rampTo(800, 10);
+
     }
 
+    if(trackNotes?.length===0&&trackPositions?.length===0){
+        return <div>...Loading</div>
+    }
+
+    if(trackNotes?.length>0&&trackPositions.length>0){
     return (
-        <div>
-            <span style={{color: 'black'}}>{track?.notes}</span>
+        <div style={{backgroundColor: "black", borderRadius: "20px", padding: '20px'}}>
+            <div style={{textAlign: 'center', padding: '10px', backgroundColor: 'black', color: "white", margin: '10px', fontSize: '10px'}}>
+                <h3>Play along on your physical piano while being guided by the recorded track or select a track from your list above for live playback</h3>
             <div>
-                <button style={{borderRadius: "50%", width: "50px", height: '50px', margin:0, padding:0}} ref={playRef}>
-                    <img style={{width: "50px", height: '50px', marginLeft: "-1px", marginTop: "-1px"}} src={play} alt="play"/>
-                </button>
+                <img style={{width: "50px", height: '50px', marginLeft: "-1px", marginTop: "-1px"}} src={play} alt="play" ref={playRef}/>
             </div>
-            <h3>Load your track or a found track here and play along on your piano:</h3>
+            </div>
             <div className="tkb-piano-container">  
                 <div className="piano-keys">
                     {keys.map((key, index) => (
@@ -129,13 +166,13 @@ function PlaybackKeyboard({track}){
                             ref={refsById["divRef"+index]}
                             id={index>=10 ? (index>=17 ? lowerRegNotes[index-17]: lowerRegNotes[index-10]): (index>=5 ? upperRegNotes[index-5] : upperRegNotes[index])}
                             data-position={index < 17 ? (index>=5&&index<10 ? (position+1) : position) : (position+(Math.floor((index-10)/7)))}
-                            className={index < 10 ? "tkb-black-key" : "tkb-white-key"}
-                            onClick={(e) => playNote(e)}>
+                            className={index < 10 ? "tkb-black-key" : "tkb-white-key"}>
                         </div>
               ))}
             </div>
             </div>
         </div>
     );
+}
 }
 export default PlaybackKeyboard

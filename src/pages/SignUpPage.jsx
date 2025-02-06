@@ -19,7 +19,7 @@ function SignUpPage() {
     
     try {
       // Check if the user already exists
-      const response = await axios.get('http://localhost:5005/users');
+      const response = await axios.get('http://localhost:3000/users');
       const userExists = response.data.find((user) => user.email === email);
 
       if (userExists) {
@@ -36,7 +36,7 @@ function SignUpPage() {
       };
 
       // Post request new user to the backend
-      await axios.post('http://localhost:5005/users', newUser);
+      await axios.post('http://localhost:3000/users', newUser);
       setSuccess('Account created successfully! Redirecting to login page...');
 
       // Redirect to home after 2 seconds
