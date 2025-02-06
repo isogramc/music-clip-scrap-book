@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignUpPage';
 import ProfilePageKeys from './pages/ProfilePageKeys';
+import Profile from './components/Profile';
 import axios from 'axios';
 // import LoginPage from './pages/LoginPage';
 // import AboutPage from './pages/AboutPage';
@@ -12,14 +13,14 @@ import './styles/global.css';
 
 function App() {
   const [user, setUser] = useState(null);
-
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:5005/users/');
+        const response = await axios.get("http://localhost:5005/users/");
         setUser(response.data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -34,8 +35,23 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/profile" element={<ProfilePage userId={user.id} />} />
-        <Route path="/profile-keys/:songId" element={<ProfilePageKeys user={user} />} />
+        {/*<Route path="/profile" element={<ProfilePage userId={user} />} />*/}
+
+        <Route
+          path="/profile"
+          element={
+                  <Profile
+                   render={(userData) => (
+                      <ProfilePage image={userData.image} fullName={userData.fullName} />
+                )}
+              />
+            
+          }
+        />
+        <Route
+          path="/profile-keys/:songId"
+          element={<ProfilePageKeys user={user.id} />}
+        />
         <Route path="/signup" element={<SignUpPage />} />
         {/*<Route path="/about" element={<AboutPage />} />
         <Route path="/profile" element={<ProfilePage user={user}/>} />

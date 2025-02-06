@@ -4,6 +4,7 @@ import './styles/ProfilePage.css';
 import CreateProject from '../components/CreateProject';
 import ProjectsList from '../components/ProjectsList';
 import ProjectsSelect from '../components/ProjectsSelect';
+import Profile from '../components/Profile';
 import axios from 'axios';
 
 const notes = [
@@ -17,7 +18,7 @@ const notes = [
     { note: 'A4', isBlack: false }, { note: 'A#4', isBlack: true }, { note: 'B4', isBlack: false }
   ];
   
-  function ProfilePage({ userId }) {
+  function ProfilePage({ userId, image, fullName }) {
     // this is the link to the LIVE SERVER
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
     const local = "http://localhost:5005/tracks";
@@ -118,23 +119,32 @@ const notes = [
     return (
       <div className="profile-page">
         {/* Top Navigation Bar */}
+        
         <nav className="top-nav">
-          <div className="profile-section">
+        <div className="profile-section">
           <div className="profile-circle">
-            {currentUserImage ? (
-              <img
-                src={currentUserImage}
-                alt="User's profile"
-                style={{ width: '50px', height: '50px', borderRadius: '50%' }}
-                onError={(e) => { e.target.onerror = null; e.target.src = 'default-image-url'; }} // Handle image load error
-              />
-            ) : (<p>Loading...</p>)
-            }
-          </div>                          
-            <div className="menu-icon">&#9776;</div>
+            <img
+              src={image}
+              alt="User's profile"
+              style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'default-image-url'; // Default image on error
+              }}
+            />
           </div>
-          <div className="logo">Piano App</div>
-        </nav>
+        </div>
+
+        {/* Center: Logo */}
+        <div className="logo">
+          
+        </div>
+
+        {/* Right: Welcome message */}
+        <div className="welcome-message">
+          <p>Welcome {fullName}</p>
+        </div>
+      </nav>
   
         {/* Main Content */}
         <div className="main-content">
@@ -143,7 +153,7 @@ const notes = [
           <ProjectsList params={{userId: currentUser}}/>
         </div>
 
-         User Id: {currentUser}  | Currently Working on project: {selectedProject}
+         {fullName}  | Currently Working on project: {selectedProject}
 
           <div className="piano-container">
             <h2>Virtual Piano</h2>
