@@ -19,7 +19,7 @@ function SignUpPage() {
     
     try {
       // Check if the user already exists
-      const response = await axios.get('http://localhost:3000/users');
+      const response = await axios.get('http://localhost:5005/users');
       const userExists = response.data.find((user) => user.email === email);
 
       if (userExists) {

@@ -54,8 +54,6 @@ function PlaybackKeyboard({ track }){
     //     baseUrl: "https://tonejs.github.io/audio/salamander/",
     // }).toDestination();
 
-
-
     useEffect(() => {
         setTrackNotes(track?.notes);
         setTrackPositions(track?.notesPositions);

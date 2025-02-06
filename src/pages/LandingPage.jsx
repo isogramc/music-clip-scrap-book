@@ -16,7 +16,7 @@ function LandingPage() {
     setError("");
 
     try {
-      const response = await axios.get("http://localhost:3000/users");
+      const response = await axios.get("http://localhost:5005/users");
       const user = response.data.find(
         (u) => u.email === email && u.password === password
       );

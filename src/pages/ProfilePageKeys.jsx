@@ -32,8 +32,8 @@ function ProfilePageKeys(props){
 
      // this is the link to the LIVE SERVER AND get tracks for song > baseUrl/songId?_embed=tracks
      const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs/${songId}`;
-     const local = `http://localhost:3000/songs/${songId}`;
-     const local2 = "http://localhost:3000/tracks/";
+     const local = `http://localhost:5005/songs/${songId}`;
+     const local2 = "http://localhost:5005/tracks/";
  
      async function getSongFile() {
          //console.log("has embed", paramsx.has("_embed")); // true
