@@ -12,7 +12,7 @@ import axios from 'axios';
 import './styles/global.css';
 
 function App() {
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
   
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,8 +35,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        {/*<Route path="/profile" element={<ProfilePage userId={user} />} />*/}
-
         <Route
           path="/profile"
           element={
@@ -50,7 +48,7 @@ function App() {
         />
         <Route
           path="/profile-keys/:songId"
-          element={<ProfilePageKeys user={user.id} />}
+          element={<ProfilePageKeys user={userData} />}
         />
         <Route path="/signup" element={<SignUpPage />} />
         {/*<Route path="/about" element={<AboutPage />} />

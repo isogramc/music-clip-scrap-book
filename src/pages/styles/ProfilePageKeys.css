@@ -6,30 +6,7 @@ body {
     outline: 1px dotted #767676;
     outline-offset: 2px;
   }
-
-  button{
-    text-wrap: nowrap;
-    margin-right: 5px;
-  }
-
-  .btn-menu{
-    width: 200px !important;
-  }
-
-  .menu-group{
-    text-align: center;
-  }
   
-  .track-list{
-    justify-self: center; 
-    width: 700px; 
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    margin: 20px;
-    scrollbar-color: white white;
-  }
-
   /* Flex */
   .flex {
     display: flex;

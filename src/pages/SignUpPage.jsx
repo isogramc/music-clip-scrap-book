@@ -8,6 +8,7 @@ function SignUpPage() {
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [image, setImage] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -39,11 +40,12 @@ function SignUpPage() {
         email,
         fullName,
         image: avatarUrl, 
+        image,
         password,
       };
 
       // Post request new user to the backend
-      await axios.post('http://localhost:5005/users', newUser);
+      await axios.post('http://localhost:3000/users', newUser);
       setSuccess('Account created successfully! Redirecting to login page...');
 
       // Redirect to home after 2 seconds
@@ -74,6 +76,13 @@ function SignUpPage() {
           placeholder="Full Name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
+          required
+        />
+         <input
+          type="text"
+          placeholder="Image"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
           required
         />
         <input

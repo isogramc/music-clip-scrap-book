@@ -10,6 +10,7 @@ function EditProject({songId, title, description, image, duration, genre}){
     const local = `http://localhost:5005/songs/${songId}`;
 
     const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         title: title,
         description: description,
@@ -24,7 +25,7 @@ function EditProject({songId, title, description, image, duration, genre}){
 
         makePost(formData);
         
-        navigate(`/profile-keys${songId}`);
+        navigate('/profile-keys/'+songId);
     }
 
 
