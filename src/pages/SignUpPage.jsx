@@ -40,12 +40,11 @@ function SignUpPage() {
         email,
         fullName,
         image: avatarUrl, 
-        image,
         password,
       };
 
       // Post request new user to the backend
-      await axios.post('http://localhost:3000/users', newUser);
+      await axios.post('http://localhost:5005/users', newUser);
       setSuccess('Account created successfully! Redirecting to login page...');
 
       // Redirect to home after 2 seconds
@@ -83,7 +82,7 @@ function SignUpPage() {
           placeholder="Image"
           value={image}
           onChange={(e) => setImage(e.target.value)}
-          required
+          hidden
         />
         <input
           type="password"

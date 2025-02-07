@@ -5,6 +5,7 @@ function SelectableList({tracks, handleSelected}) {
   const [selected, setSelected] = useState(1); // Initialize with -1 to indicate no selection
 
   const handleItemClick = (index) => {
+    console.log(index);
     setSelected(index);
     handleSelected(index);
   };

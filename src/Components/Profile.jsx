@@ -5,7 +5,7 @@ import axios from 'axios';
 function Profile({ render }) {
   const location = useLocation();
   const userId = location?.state?.userId;
-  const [userData, setUserData] = useState({ image: '', fullName: '' });
+  const [userData, setUserData] = useState({ id: "", image: '', fullName: '' });
 
   useEffect(() => {
     if (!userId) {
@@ -15,7 +15,7 @@ function Profile({ render }) {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5005/users/${userId}`);
+        const response = await axios.get(`http://localhost:3000/users/${userId}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -23,7 +23,7 @@ function Profile({ render }) {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, []);
 
   return <>{userData.image && render(userData)}</>;
 }

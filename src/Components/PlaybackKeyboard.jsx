@@ -6,6 +6,7 @@ import * as Tone from "tone";
 function PlaybackKeyboard({ track }){
     const [keys, setKeys] = useState(Array(24).fill(null));
     // set position of keyboard here - middle C is C4. Lower keyboard by decrementing (limit 0). Increase pitch for higher (limit 9)
+    // default for the project is C3
     const [position, setPosition] = useState(3);
     const [lowerRegNotes, setLowerRegNotes] = useState(["C", "D", "E", "F", "G", "A", "B"]);
     const [upperRegNotes, setUpperRegNotes] = useState(["C#", "Eb", "F#", "G#", "Bb"]);
