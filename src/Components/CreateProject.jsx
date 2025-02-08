@@ -14,7 +14,7 @@ function CreateProject(props){
     });
 
      // this is the link to the LIVE SERVER
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
+     const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
      const local = "http://localhost:5005/songs";
 
      const create = (e) => {
@@ -40,7 +40,7 @@ function CreateProject(props){
 
 
     const makePost = async (data) => {
-        await axios.post(local, data).then(function (response) {
+        await axios.post(remote, data).then(function (response) {
             console.log(response);
         }).catch(function (error) {
             console.log(error);

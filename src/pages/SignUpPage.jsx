@@ -13,6 +13,9 @@ function SignUpPage() {
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
+  const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
+  const local = "http://localhost:5005/users";
+
   useEffect(() => {
     if (email) {
       setAvatarUrl(`https://robohash.org/${encodeURIComponent(email)}.png?size=200x200`);
@@ -26,7 +29,7 @@ function SignUpPage() {
     
     try {
       // Check if the user already exists
-      const response = await axios.get('http://localhost:5005/users');
+      const response = await axios.get(remote);
       const userExists = response.data.find((user) => user.email === email);
 
       if (userExists) {
@@ -44,7 +47,7 @@ function SignUpPage() {
       };
 
       // Post request new user to the backend
-      await axios.post('http://localhost:5005/users', newUser);
+      await axios.post(remote, newUser);
       setSuccess('Account created successfully! Redirecting to login page...');
 
       // Redirect to home after 2 seconds

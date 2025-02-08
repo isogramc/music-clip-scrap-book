@@ -9,12 +9,12 @@ function ProjectsList(props){
     const [mainDisplay, setMainDisplay] = useState(false);
 
      // this is the link to the LIVE SERVER
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
+     const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
      const local = "http://localhost:5005/songs";
  
      const handleDelete = async (id) => {
       // change the link depending on the environment 
-      const url = local + '/' + id;
+      const url = remote + '/' + id;
          try {
           const res = await axios.delete(url);
         } catch (error) {
@@ -25,7 +25,7 @@ function ProjectsList(props){
     async function getProjects() {
         try {
           // change the link depending on the environment 
-          return await axios({url: local, 
+          return await axios({url: remote, 
             method: 'get',
             timeout: 8000,
             headers: {
@@ -40,7 +40,7 @@ function ProjectsList(props){
       async function getProjectsWithParams() {
         try {
           // change the link depending on the environment 
-          return await axios({url: local, 
+          return await axios({url: remote, 
             method: 'get',
             timeout: 8000,
             headers: {

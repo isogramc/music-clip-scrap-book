@@ -25,8 +25,10 @@ const notes = [
     // this is the link to the LIVE SERVER
     let location = useLocation();
     let locationParams = location.state.queryParams;
-    const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
-    const local = "http://localhost:5005/tracks";
+    const remoteUsers = `${import.meta.env.VITE_APP_API_URL}/users`;
+    const localUsers = "http://localhost:5005/users";
+    const remoteTracks = `${import.meta.env.VITE_APP_API_URL}/tracks`;
+    const localTracks = "http://localhost:5005/tracks";
     const [showCreate, setShowCreate] = useState(false);
     const [showRecord, setShowRecord] = useState(false);
     const [player, setPlayer] = useState(null);
@@ -53,7 +55,7 @@ const notes = [
       // Fetch user from backend API using userId prop
       const fetchUser = async () => {
         try {
-          const response = await axios.get(`http://localhost:5005/users/${userId}`);
+          const response = await axios.get(`${remoteUsers}/${userId}`);
           console.log('User data:', response.data); // Debug log
           setCurrentUser(response.data);
           setCurrentUserImage(response.data.image);
@@ -75,7 +77,7 @@ const notes = [
 
     const addNewTrackToProject = async (trackData) => {
       console.log(trackData);
-      await axios.post(local, trackData).then(function (response) {
+      await axios.post(remoteTracks, trackData).then(function (response) {
         console.log(response);
       }).catch(function (error) {
         console.log(error);

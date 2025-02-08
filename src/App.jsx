@@ -13,11 +13,13 @@ import './styles/global.css';
 
 function App() {
   const [user, setUser] = useState(null);
+  const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
+  const local = "http://localhost:5005/users";
   
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/users/");
+        const response = await axios.get(remote);
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

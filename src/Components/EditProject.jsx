@@ -6,7 +6,7 @@ function EditProject({songId, title, description, image, duration, genre}){
     console.log(songId, title, description, image, duration, genre);
 
     // this is the link to the LIVE SERVER
-    const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs/${songId}`;
+    const remote = `${import.meta.env.VITE_APP_API_URL}/songs/${songId}`;
     const local = `http://localhost:5005/songs/${songId}`;
 
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function EditProject({songId, title, description, image, duration, genre}){
 
 
     const makePost = async (data) => {
-        await axios.put(local, data).then(function (response) {
+        await axios.put(remote, data).then(function (response) {
             console.log(response);
         }).catch(function (error) {
             console.log(error);

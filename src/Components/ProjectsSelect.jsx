@@ -7,14 +7,14 @@ function ProjectsSelect({params, selectProject}){
     const [selectedProject, setSelectedProject] = useState("");
 
      // this is the link to the LIVE SERVER
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
+     const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
      const local = "http://localhost:5005/songs";
- 
+
 
       async function getProjectsWithParams() {
         try {
           // change the link depending on the environment 
-          return await axios({url: local, 
+          return await axios({url: remote, 
             method: 'get',
             timeout: 8000,
             headers: {

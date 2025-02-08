@@ -31,8 +31,9 @@ function ProfilePageKeys(props){
     }, []);
 
      // this is the link to the LIVE SERVER AND get tracks for song > baseUrl/songId?_embed=tracks
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs/${songId}`;
+     const remote = `${import.meta.env.VITE_APP_API_URL}/songs/${songId}`;
      const local = `http://localhost:5005/songs/${songId}`;
+     const remote2 = `${import.meta.env.VITE_APP_API_URL}/tracks`;
      const local2 = "http://localhost:5005/tracks/";
  
      async function getSongFile() {
@@ -40,8 +41,8 @@ function ProfilePageKeys(props){
          const params = {"songId": songId};
          try {
            // change the link depending on the environment 
-           const p1 = await axios.get(local);
-           const p2 = await axios.get(local2, {
+           const p1 = await axios.get(remote);
+           const p2 = await axios.get(remote2, {
             params: params
           });
            return Promise.all([p1, p2])

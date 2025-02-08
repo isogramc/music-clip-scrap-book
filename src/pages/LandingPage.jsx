@@ -11,12 +11,15 @@ function LandingPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
+  const local = "http://localhost:5005/users";
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.get("http://localhost:5005/users");
+      const response = await axios.get(remote);
       const user = response.data.find(
         (u) => u.email === email && u.password === password
       );
