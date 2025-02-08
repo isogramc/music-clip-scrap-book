@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignUpPage';
@@ -34,6 +34,7 @@ function App() {
   }
 
   return (
+    <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -57,6 +58,7 @@ function App() {
         {/*<Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />*/}
       </Routes>
+    </Router>
   );
 }
 
