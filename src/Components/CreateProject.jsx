@@ -22,7 +22,7 @@ function CreateProject(props){
 
         const dataObj = {
             ...formData,
-            userId: userId!==undefined?userId:2,
+            userId: userId,
         }
 
         makePost(dataObj);

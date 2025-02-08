@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router';
 import Soundfont from 'soundfont-player';
 import './styles/ProfilePage.css';
 import CreateProject from '../components/CreateProject';
 import ProjectsList from '../components/ProjectsList';
 import ProjectsSelect from '../components/ProjectsSelect';
 import Profile from '../components/Profile';
+import Playback from '../components/Playback';
 import axios from 'axios';
 
 const notes = [
@@ -17,9 +19,12 @@ const notes = [
     { note: 'F#4', isBlack: true }, { note: 'G4', isBlack: false }, { note: 'G#4', isBlack: true },
     { note: 'A4', isBlack: false }, { note: 'A#4', isBlack: true }, { note: 'B4', isBlack: false }
   ];
+  const arr=[];
   
   function ProfilePage({ userId, image, fullName }) {
     // this is the link to the LIVE SERVER
+    let location = useLocation();
+    let locationParams = location.state.queryParams;
     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/tracks`;
     const local = "http://localhost:5005/tracks";
     const [showCreate, setShowCreate] = useState(false);
@@ -31,11 +36,16 @@ const notes = [
     const [currentUser, setCurrentUser] = useState(null);
     const [currentUserImage, setCurrentUserImage] = useState('');
     const [notesText, setNotesText] = useState("");
+    const [notesPositions, setNotesPositions] = useState([]);
     const [selectedProject, setSelectedProject] = useState("");
-
+    const [showPlayback, setShowPlayback] = useState(false);
+    const [myInstructions, setMyInstructions] = useState("");
 
     useEffect(() => {
       if (!userId) {
+        if(locationParams){
+          setCurrentUser(locationParams);
+        }
         console.error('userId is not defined');
         return;
       }
@@ -67,7 +77,6 @@ const notes = [
       console.log(trackData);
       await axios.post(local, trackData).then(function (response) {
         console.log(response);
-        setShowRecord(!showRecord);
       }).catch(function (error) {
         console.log(error);
       });
@@ -81,6 +90,7 @@ const notes = [
             ...notesText, 
             note
           ]);
+          getPositionForPlayback(note);
         }
       }
     };
@@ -99,16 +109,62 @@ const notes = [
     const createProject = () => {
       setShowCreate(!showCreate);
     }
+    
+    function getPositionForPlayback(note){
+      // this depends on the keyboard the user uses to playback songs
+      // this has to remain dynamic because of mobile view
+      // for the demo we use C3
+      console.log(note);
+      const position = 3; 
+      let index, notePos = note.charAt(note.length-1);
+      const useMobileLayout = ["C#"+position, "Eb"+position, "F#"+position, "G#"+position, "Bb"+position,"C#"+(position+1), "Eb"+(position+1), "F#"+(position+1), "G#"+(position+1), "Bb"+(position+1),"C"+position, "D"+position, "E"+position, "F"+position, "G"+position, "A"+position, "B"+position, "C"+(position+1), "D"+(position+1), "E"+(position+1), "F"+(position+1), "G"+(position+1), "A"+(position+1), "B"+(position+1)]
+      //for (let i=0; i<tune.length; i++){
+        let replace = "";
+        if(note.includes("D#")){ replace = "Eb"+notePos};
+        if(note.includes("A#")){ replace = "Bb"+notePos};
+        console.log(replace);
+
+        if(replace.length>0){
+          for (let i = 0; i < useMobileLayout.length; i++) {
+             const element = useMobileLayout[i];
+            if(element == replace){
+              index = i;
+              arr.push(index);
+            }  
+          }
+        }else{
+          for (let i = 0; i < useMobileLayout.length; i++) {
+            const element = useMobileLayout[i];
+           if(element == note){
+             index = i;
+             arr.push(index);
+           }  
+         }
+        }
+
+      console.log(arr);
+      setNotesPositions(arr);
+    }
 
     const save = () => {
       console.log("track added to -> ", selectedProject);
+      let durationA = notesText.length * 0.5;
       let instructions = prompt("Any instructions to add?", "left-hand");
-      const track = {
-        instructions: instructions,
-        notes: notesText,
-        songId: selectedProject,
+      setMyInstructions(instructions);
+        const track = {
+          instructions: instructions,
+          notes: notesText,
+          songId: selectedProject,
+          notesPositions: notesPositions,
+          duration: durationA
+        }
+        console.log(track, notesPositions);
+      if(notesPositions.length===notesText.length){
+        setTrack(track);
+        addNewTrackToProject(track);
+        setShowRecord(false);
+        setShowPlayback(true);
       }
-      addNewTrackToProject(track);
     }
 
     const selectProject = (id) => {
@@ -149,11 +205,13 @@ const notes = [
         {/* Main Content */}
         <div className="main-content">
           {/* Left Side: Piano */}
+          <div>Welcome to your workspace! Play on the piano or record a track</div>
         <div className='contains-proj-list'>
+          <div>Existing Projects: Click on a song in the list to go into edit and playback mode</div>
           <ProjectsList params={{userId: currentUser}}/>
         </div>
 
-         {fullName}  | Currently Working on project: {selectedProject}
+         {showRecord && <div>{fullName} is currently Recording </div>}
 
           <div className="piano-container">
             <h2>Virtual Piano</h2>
@@ -173,7 +231,7 @@ const notes = [
             {/* Right Side: Recorded Section */}
            {showRecord && <div className="recorded-section">
               <h3>Recorded Melody</h3>
-              <textarea value={notesText} onChange={onChange} className="recorded-display"></textarea>
+              <textarea style={{maxHeight: '120px'}} value={notesText} onChange={onChange} className="recorded-display"></textarea>
               <button onClick={save}>Save</button>
             </div>}
         </div>
@@ -182,15 +240,13 @@ const notes = [
   
         {/* Bottom Player */}
         <div className="bottom-player">
-          <button className="create-project" onClick={createProject}>{showCreate?"Return":"New Song"}</button>
-          {!selectedProject && <label>Please select a project to work on:</label>}
+          <button className="create-project" style={{width: '130px'}} onClick={createProject}>{showCreate?"Return":"Create New"}</button>
+          {!selectedProject && <label>Start a recording for your song</label>}
           <ProjectsSelect selectProject={selectProject} params={{userId: currentUser}}/>
           {selectedProject && (<div>
             <button className="record-button" onClick={handleRecord}>Record</button>
               <div className="playback-controls">
-                <button>⏮️</button>
-                <button onClick={handlePlay}>▶️</button>
-                <button>⏭️</button>
+                {showPlayback && <Playback playSong={track}/> }
               </div>
             </div>)}
         </div>

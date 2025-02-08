@@ -63,9 +63,9 @@ function ProfilePageKeys(props){
             <div className='menu-group'>
               <button className={"btn-menu"} onClick={e=>setShowEdit(!showEdit)}>{showEdit?"Hide Edit":"Edit Song"}</button>
               <button className={"btn-menu"} onClick={e=>setShowTracks(!showTracks)}>{showTracks?"Hide Tracks":"View Tracks"}</button>
-              <button className={"btn-menu"} onClick={e=>navigate('/profile')}>Go Back</button>
+              <button className={"btn-menu"} onClick={e=>navigate('/profile', { state: {currentUser: currentUser}})}>Go Back</button>
             </div>
-            {showEdit && <EditProject songId={song.id}  title={song.title} description={song.description} image={song.image} duration={song.duration} genre={song.genre} />}
+              {showEdit && <EditProject songId={song.id}  title={song.title} description={song.description} image={song.image} duration={song.duration} genre={song.genre} />}
             <div className={"track-list"}>
               {showTracks && <SelectableList tracks={tracks} handleSelected={handleSelected}/>}   
             </div>

@@ -12,12 +12,12 @@ import axios from 'axios';
 import './styles/global.css';
 
 function App() {
-  //const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://localhost:5005/users/");
+        const response = await axios.get("http://localhost:3000/users/");
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -38,23 +38,22 @@ function App() {
         <Route
           path="/profile"
           element={
-                  <Profile
-                   render={(userData) => (
-                      <ProfilePage image={userData.image} fullName={userData.fullName} />
-                )}
+                  <Profile render={(user) => (
+                      <ProfilePage userId={user.id} image={user.image} fullName={user.fullName} />
+                   )}
               />
-            
           }
         />
         <Route
           path="/profile-keys/:songId"
-          element={<ProfilePageKeys user={userData} />}
+          element={<Profile render={(user) =>
+            <ProfilePageKeys user={user} />
+          }
+          />
+        }
         />
         <Route path="/signup" element={<SignUpPage />} />
         {/*<Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<ProfilePage user={user}/>} />
-        {/* <Route path="/login" element={<LoginPage />} />
-        <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />*/}
       </Routes>
     </Router>
