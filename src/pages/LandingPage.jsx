@@ -51,9 +51,6 @@ function LandingPage() {
           <button onClick={() => setShowLogin(true)} className="login-btn">
             Login
           </button>
-          <Link to="/profile" className="profile-btn">
-            Profile
-          </Link>
         </div>
       </nav>
 
