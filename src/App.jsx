@@ -34,7 +34,6 @@ function App() {
   }
 
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
@@ -58,7 +57,6 @@ function App() {
         {/*<Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />*/}
       </Routes>
-    </Router>
   );
 }
 
