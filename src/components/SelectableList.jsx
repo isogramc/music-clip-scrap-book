@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Playback from '../components/Playback'
+import Playback from './Playback'
 
 function SelectableList({tracks, handleSelected}) {
   const [selected, setSelected] = useState(1); // Initialize with -1 to indicate no selection
