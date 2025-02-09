@@ -9,7 +9,7 @@ import SelectableList from '../components/SelectableList'
 import { useNavigate } from "react-router-dom";
 
 function ProfilePageKeys(props){
-    const [currentUser, setCurrentUser] = useState(props.user.userId);
+    const [currentUser, setCurrentUser] = useState(props?.user?.userId);
     const [song, setSong] = useState({});
     const [tracks, setTracks] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
@@ -21,7 +21,11 @@ function ProfilePageKeys(props){
 
     const navigate = useNavigate();
     
-    useEffect(()=>{    
+    useEffect(()=>{   
+      const userd = localStorage.getItem('tokens');
+      const theUser = JSON.parse(userd);
+      setCurrentUser(theUser.id);
+
         getSongFile().then(function (result) {
             console.log(result);
             setSong(result[0].data);
