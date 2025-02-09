@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import ProjectsList from "../components/ProjectsList";
 import "./styles/LandingPage.css";
@@ -9,10 +9,15 @@ function LandingPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
   const local = "http://localhost:5005/users";
+
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,6 +30,9 @@ function LandingPage() {
       );
 
       if (user) {
+        console.log(user);
+        setTokens(user);
+        setLoggedIn(true);
         navigate("/profile", { state: { userId: user.id } });
       } else {
         setError("Invalid email or password.");
@@ -39,7 +47,6 @@ function LandingPage() {
     setEmail("");
     setPassword("");
     setError("");
-
   };
 
   return (

@@ -7,6 +7,15 @@ body {
     outline-offset: 2px;
   }
 
+  .selectable-list{
+    display: flex;
+    flex-direction: row;
+  }
+
+  li.selected {
+    background-color: yellow;
+  }
+
   button{
     text-wrap: nowrap;
     margin-right: 5px;

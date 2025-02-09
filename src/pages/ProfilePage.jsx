@@ -194,9 +194,7 @@ const notes = [
         </div>
 
         {/* Center: Logo */}
-        <div className="logo">
-          
-        </div>
+        <div className="logo"></div>
 
         {/* Right: Welcome message */}
         <div className="welcome-message">

@@ -2,22 +2,17 @@ import React, { useState } from 'react';
 import Playback from './Playback'
 
 function SelectableList({tracks, handleSelected}) {
-  const [selected, setSelected] = useState(1); // Initialize with -1 to indicate no selection
+  const [selected, setSelected] = useState(0);
 
-  const handleItemClick = (index) => {
-    console.log(index);
-    setSelected(index);
-    handleSelected(index);
+  const handleItemClick = (id) => {
+    console.log(id);
+    handleSelected(id);
   };
 
   return (
-    <ul>
+    <ul className='selectable-list'>
       {tracks?.map((track, index)=>
-        <li
-          key={index}
-          onClick={() => handleItemClick(index)}
-          className={selected === index ? "selected" : ""}
-        >    
+        <li key={index} id={track.id} onClick={(e) => handleItemClick(track.id)} className={selected === index ? "selected" : ""} >    
             <div> {index+1}. <Playback playSong={track}/></div>
         </li>
       )}

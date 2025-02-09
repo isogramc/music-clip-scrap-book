@@ -15,6 +15,7 @@ function ProfilePageKeys(props){
     const [showEdit, setShowEdit] = useState(false);
     const [showTracks, setShowTracks] = useState(false);
     const [selectedTrack, setSelectedTrack] = useState(null);
+    const [updateSelection, setupdateSelection] = useState(null);
     const {songId} = useParams();
     console.log(songId);
 
@@ -26,7 +27,12 @@ function ProfilePageKeys(props){
             setSong(result[0].data);
             setTracks(result[1].data)
             console.log('api', result[1].data.notes);
-            setSelectedTrack(result[1].data[0])
+            if(updateSelection!=null){
+              setSelectedTrack(result[1].data[updateSelection]);
+              console.log(result[1].data[updateSelection]);
+            }else{
+              setSelectedTrack(result[1].data[0]);
+            }  
         });  
     }, []);
 
@@ -39,6 +45,7 @@ function ProfilePageKeys(props){
      async function getSongFile() {
          //console.log("has embed", paramsx.has("_embed")); // true
          const params = {"songId": songId};
+         console.log(params);
          try {
            // change the link depending on the environment 
            const p1 = await axios.get(remote);
@@ -52,7 +59,9 @@ function ProfilePageKeys(props){
        }
 
        const handleSelected = (index) => {
-          setSelectedTrack(selectedTrack);
+          console.log(index);
+          setupdateSelection(index);
+          getSongFile();
        }
 
     return (

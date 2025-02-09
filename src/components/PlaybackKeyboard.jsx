@@ -4,6 +4,7 @@ import play from './../assets/play.svg'
 import * as Tone from "tone";
 
 function PlaybackKeyboard({ track }){
+    console.log('easy', track);
     const [keys, setKeys] = useState(Array(24).fill(null));
     // set position of keyboard here - middle C is C4. Lower keyboard by decrementing (limit 0). Increase pitch for higher (limit 9)
     // default for the project is C3
@@ -29,7 +30,12 @@ function PlaybackKeyboard({ track }){
         el.style.backgroundColor = colours[random];
     }
     const removeColor = (el) => {
-        el.style.backgroundColor = 'white';
+        if(el.classList.contains('tkb-white-key')){
+            el.style.backgroundColor = 'white';
+        }else{
+            el.style.backgroundColor = 'black';
+        }
+        
     }
 
     const sampler = new Tone.Sampler({
@@ -93,6 +99,7 @@ function PlaybackKeyboard({ track }){
         // still testing with loops: example here
         // const loopA = new Tone.Loop((time) => {
         // }, "4n").start(0);
+        console.log("hey");
 
          await Tone.loaded().then(() => {
             const now = Tone.now();
