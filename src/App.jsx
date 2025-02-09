@@ -13,8 +13,7 @@ import './App.css'
 import './styles/global.css';
 
 function App() {
-  const [authTokens, setAuthTokens] = useState();
-  const [users, setUsers] = useState(null);
+  const [user, setUser] = useState(null);
 
   return (
       <Routes>
@@ -25,9 +24,7 @@ function App() {
         />  
         <Route 
           path="/profile-keys/:songId" 
-          element={
-              <ProfilePageKeys user={user} />
-            }
+          element={<ProfilePageKeys user={user} /> }
         />  
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/about" element={<AboutPage />} />
