@@ -50,16 +50,16 @@ function PlaybackKeyboard({ track }){
     }).toDestination();
 
     //uncomment for playaable keyboard: note - it is not recommended to have playing and playable keyboard at once
-    // const samplerA = new Tone.Sampler({
-    //     urls: {
-    //         "C4": "C4.mp3",
-    //         "D#4": "Ds4.mp3",
-    //         "F#4": "Fs4.mp3",
-    //         "A4": "A4.mp3",
-    //     },
-    //     release: 1,
-    //     baseUrl: "https://tonejs.github.io/audio/salamander/",
-    // }).toDestination();
+    const samplerA = new Tone.Sampler({
+        urls: {
+            "C4": "C4.mp3",
+            "D#4": "Ds4.mp3",
+            "F#4": "Fs4.mp3",
+            "A4": "A4.mp3",
+        },
+        release: 1,
+        baseUrl: "https://tonejs.github.io/audio/salamander/",
+    }).toDestination();
 
     useEffect(() => {
         setTrackNotes(track?.notes);
@@ -83,15 +83,15 @@ function PlaybackKeyboard({ track }){
 
 
     //uncomment for playaable keyboard: note - it is not recommended to have playing and playable keyboard at once
-    // async function playNote(e){
-    //     //console.log(e.target.id, e.target.getAttribute(['data-position']))
-    //     await Tone.loaded().then(() => {
-    //          let note = e.target.id;
-    //          let position = e.target.getAttribute(['data-position']);
-    //          console.log(note+position);
-    //          samplerA.triggerAttackRelease(note+position, 1.2);
-    //      });
-    // }   
+    async function playNote(e){
+        //console.log(e.target.id, e.target.getAttribute(['data-position']))
+        await Tone.loaded().then(() => {
+             let note = e.target.id;
+             let position = e.target.getAttribute(['data-position']);
+             console.log(note+position);
+             samplerA.triggerAttackRelease(note+position, 1.2);
+         });
+    }   
 
 
     const playSong = async ()=>{
@@ -99,7 +99,7 @@ function PlaybackKeyboard({ track }){
         // still testing with loops: example here
         // const loopA = new Tone.Loop((time) => {
         // }, "4n").start(0);
-        console.log("hey");
+        //console.log("hey");
 
          await Tone.loaded().then(() => {
             const now = Tone.now();
