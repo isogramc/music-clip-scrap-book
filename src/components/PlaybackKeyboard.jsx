@@ -99,7 +99,7 @@ function PlaybackKeyboard({ track }){
         // still testing with loops: example here
         // const loopA = new Tone.Loop((time) => {
         // }, "4n").start(0);
-        //console.log("hey");
+        console.log("hey");
 
          await Tone.loaded().then(() => {
             const now = Tone.now();
@@ -172,7 +172,7 @@ function PlaybackKeyboard({ track }){
                             ref={refsById["divRef"+index]}
                             id={index>=10 ? (index>=17 ? lowerRegNotes[index-17]: lowerRegNotes[index-10]): (index>=5 ? upperRegNotes[index-5] : upperRegNotes[index])}
                             data-position={index < 17 ? (index>=5&&index<10 ? (position+1) : position) : (position+(Math.floor((index-10)/7)))}
-                            className={index < 10 ? "tkb-black-key" : "tkb-white-key"}>
+                            className={index < 10 ? "tkb-black-key" : "tkb-white-key"} onClick={(e)=>playNote(e)}>
                         </div>
               ))}
             </div>
