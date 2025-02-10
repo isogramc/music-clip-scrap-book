@@ -64,8 +64,8 @@ function ProfilePageKeys(props){
 
        const handleSelected = (index) => {
           console.log(index);
+          setSelectedTrack(index);
           setupdateSelection(index);
-          getSongFile();
        }
 
     return (
