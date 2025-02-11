@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/LandingPage.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './styles/LandingPage.css';
+import ProjectsList from '../components/ProjectsList';
 
 function LandingPage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -50,6 +54,9 @@ function LandingPage() {
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
         <p>Learn, play, and record your own melodies with our virtual piano.</p>
+        <div className='contains-proj-list'>
+          <ProjectsList />
+        </div>
       </main>
 
       {/* Footer */}
