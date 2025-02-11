@@ -5,10 +5,9 @@ import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignUpPage';
 import ProfilePageKeys from './pages/ProfilePageKeys';
 import Profile from './components/Profile'
-import axios from 'axios';
 import AboutPage from './pages/AboutPage';
 // import LoginPage from './pages/LoginPage';
-// import ContactPage from './pages/ContactPage';
+import ContactPage from './pages/TeamPage';
 import './App.css'
 import './styles/global.css';
 
@@ -28,6 +27,7 @@ function App() {
         />  
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
   );
 }
