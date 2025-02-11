@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 function Profile({ render }) {
-  const location = useLocation();
-  const [userId, setUserId] = useState(location?.state?.userId);
-  const [userData, setUserData] = useState({ id: "", image: '', fullName: '' });
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({ id: '', image: '', fullName: '' });
   const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
   const local = "http://localhost:5005/users";
 
   useEffect(() => {
-    const userd = localStorage.getItem('tokens');
-    const theUser = JSON.parse(userd);
-    setUserId(theUser.id);
-    
-    if (!userId) {
-        console.error('No userId provided in navigation state');
-        return;
+    const storedUser = localStorage.getItem('tokens');
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+    if (parsedUser && parsedUser.id) {
+      setUserId(parsedUser.id);
+    } else {
+      console.error('User ID not found in localStorage');
     }
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return; 
 
     const fetchUserData = async () => {
       try {
@@ -29,7 +31,7 @@ function Profile({ render }) {
     };
 
     fetchUserData();
-  }, []);
+  }, [userId]);
 
   return <>{userData.image && render(userData)}</>;
 }

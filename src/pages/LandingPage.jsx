@@ -52,14 +52,7 @@ function LandingPage() {
   return (
     <div className="landing-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo"></div>
-        <div className="nav-links">
-          <button onClick={() => setShowLogin(true)} className="login-btn">
-            Login
-          </button>
-        </div>
-      </nav>
+      
 
       {/* Main Content */}
       <main className="main-content">
@@ -71,10 +64,7 @@ function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-      </footer>
+      
 
       {/* Login Pop-up */}
       {showLogin && (

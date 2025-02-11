@@ -1,6 +1,10 @@
 body {
-    font-family: sans-serif;
-    background-color: #fcfcfc;
+    /* font-family: sans-serif;
+    background-color: #fcfcfc; */
+  font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    margin: 0;
+    padding: 0;
   }
   :focus {
     outline: 1px dotted #767676;

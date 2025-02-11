@@ -7,9 +7,15 @@ function ProjectsSelect({params, selectProject}){
     const [selectedProject, setSelectedProject] = useState("");
 
      // this is the link to the LIVE SERVER
+<<<<<<< HEAD:src/components/ProjectsSelect.jsx
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
      const local = "http://localhost:5005/songs";
 
+=======
+     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
+     const local = "http://localhost:5005/songs";
+ 
+>>>>>>> 5df882ccf8b1422483a21026b19ed7dcccba7db3:src/Components/ProjectsSelect.jsx
 
       async function getProjectsWithParams() {
         try {

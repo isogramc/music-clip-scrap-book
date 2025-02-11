@@ -14,15 +14,22 @@ body {
   
   /* Navbar */
   .navbar {
+    background-color: #343a40;
+    padding: 1rem 2rem;
+    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #cfcaca;
     padding: 1rem 2rem;
     color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
   }
   
   .logo {
+<<<<<<< HEAD
   width: 90px;  
   height: 58px; 
   background-image: url('/src/assets/PianoApp.png'); 
@@ -30,6 +37,15 @@ body {
   background-position: center;
   border-radius: 10px; 
   }
+=======
+    width: 90px;  
+    height: 58px; 
+    background-image: url('/src/assets/PianoApp.png'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px; 
+    }
+>>>>>>> 5df882ccf8b1422483a21026b19ed7dcccba7db3
   
   .nav-links {
     display: flex;
@@ -57,18 +73,43 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
-  }
-  
-  .main-content h1 {
-    font-size: 3rem;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #e0f7fa, #fff);
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+
+.main-content h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.5rem;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 1rem;
-  }
-  
-  .main-content p {
-    font-size: 1.2rem;
-    color: #555;
-  }
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-out;
+}
+
+.main-content p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    color: #333;
+    margin-top: 0.5rem;
+    animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
   
   /* Footer */
   .footer {

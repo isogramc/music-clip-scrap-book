@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   .login-page {
     display: flex;
     flex-direction: column;
@@ -66,3 +67,73 @@
     margin-top: 1rem;
   }
   
+=======
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h2 {
+  margin-left: 40px;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.avatar-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+}
+
+.avatar-preview img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 2px solid #4d96e4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+  padding: 1.5rem;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.signup-form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.signup-form button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signup-form button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+>>>>>>> 5df882ccf8b1422483a21026b19ed7dcccba7db3

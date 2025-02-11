@@ -1,6 +1,6 @@
-import PlaybackKeyboard from './../components/PlaybackKeyboard'
+import PlaybackKeyboard from '../components/PlaybackKeyboard'
 import EditProject from '../components/EditProject'
-import ProjectCard from './../components/ProjectCard'
+import ProjectCard from '../components/ProjectCard'
 import './../App.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
