@@ -1,6 +1,5 @@
 
 
-
 function NavBar( props ) {
   return (
     <nav className="navbar">
