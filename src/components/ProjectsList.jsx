@@ -9,11 +9,7 @@ function ProjectsList(props){
     const [mainDisplay, setMainDisplay] = useState(false);
 
      // this is the link to the LIVE SERVER
-<<<<<<< HEAD:src/components/ProjectsList.jsx
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
-=======
-     const remote = `${import.meta.env.VITE_APP_API_URL_LOCAL}/songs`;
->>>>>>> 5df882ccf8b1422483a21026b19ed7dcccba7db3:src/Components/ProjectsList.jsx
      const local = "http://localhost:5005/songs";
  
      const handleDelete = async (id) => {
