@@ -1,31 +1,36 @@
-
-import React , {useState} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import ProfilePage from './pages/ProfilePage';
-import SignUpPage from './pages/SignUpPage';
-import ProfilePageKeys from './pages/ProfilePageKeys';
-// import LoginPage from './pages/LoginPage';
-// import AboutPage from './pages/AboutPage';
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import LandingPage from "./pages/LandingPage";
+import ProfilePage from "./pages/ProfilePage";
+import SignUpPage from "./pages/SignUpPage";
+import ProfilePageKeys from "./pages/ProfilePageKeys";
+import Profile from "./components/Profile";
+import axios from "axios";
+import AboutPage from "./pages/AboutPage";
 // import ContactPage from './pages/ContactPage';
-import './styles/global.css';
+import "./App.css";
+import "./styles/global.css";
 
 function App() {
-  const [user, setUser] = useState({userId: 2, image: "https://res.cloudinary.com/dwyipecoa/image/upload/v1737391815/th-3544425054_iifsql.jpg"});
+  const [user, setUser] = useState(null);
+
   return (
-    <Router>
+    <>
+      <NavBar props={user} />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route exact path="/" element={<LandingPage />} />
+        <Route path="/profile" element={<ProfilePage userId={user} />} />
+        <Route
+          path="/profile-keys/:songId"
+          element={<ProfilePageKeys user={user} />}
+        />
         <Route path="/signup" element={<SignUpPage />} />
-        {/*<Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<ProfilePage user={user}/>} />
-        <Route path="/profile-keys/:songId" element={<ProfilePageKeys user={user}/>} />
-        {/* <Route path="/login" element={<LoginPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />*/}
       </Routes>
-    </Router>
+      <Footer />
+    </>
   );
 }
 

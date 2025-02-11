@@ -1,32 +1,39 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
+import ProjectsList from "../components/ProjectsList";
 import "./styles/LandingPage.css";
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './styles/LandingPage.css';
-import ProjectsList from '../components/ProjectsList';
 
 function LandingPage() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
+  const local = "http://localhost:5005/users";
+
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.get("http://localhost:5005/users");
+      const response = await axios.get(remote);
       const user = response.data.find(
         (u) => u.email === email && u.password === password
       );
 
       if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/profile");
+        console.log(user);
+        setTokens(user);
+        setLoggedIn(true);
+        navigate("/profile", { state: { userId: user.id } });
       } else {
         setError("Invalid email or password.");
       }
@@ -35,43 +42,35 @@ function LandingPage() {
     }
   };
 
+  const closeLoginPopup = () => {
+    setShowLogin(false);
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
+
   return (
     <div className="landing-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="logo">Piano App</div>
-        <div className="nav-links">
-          <button onClick={() => setShowLogin(true)} className="login-btn">
-            Login
-          </button>
-          <Link to="/profile" className="profile-btn">
-            Profile
-          </Link>
-        </div>
-      </nav>
+      
 
       {/* Main Content */}
       <main className="main-content">
         <h1>Welcome to Piano App</h1>
         <p>Learn, play, and record your own melodies with our virtual piano.</p>
-        <div className='contains-proj-list'>
+        <div className="contains-proj-list">
           <ProjectsList />
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-      </footer>
+      
 
       {/* Login Pop-up */}
       {showLogin && (
-        <div
-          className="login-popup-overlay"
-          onClick={() => setShowLogin(false)}
-        >
+        <div className="login-popup-overlay" onClick={() => setShowLogin(false)}>
           <div className="login-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeLoginPopup}>X</button>
             <h2>Login</h2>
             <form onSubmit={handleLogin} className="login-form">
               <input
@@ -92,7 +91,7 @@ function LandingPage() {
             </form>
             {error && <p className="error-message">{error}</p>}
             <p className="signup-option">
-              Don't have an account? <a href="/signup">Sign up here</a>
+              Don't have an account? <Link to="/signup">Sign up here</Link>
             </p>
           </div>
         </div>
@@ -100,5 +99,6 @@ function LandingPage() {
     </div>
   );
 }
+
 
 export default LandingPage;

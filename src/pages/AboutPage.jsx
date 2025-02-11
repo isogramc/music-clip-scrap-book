@@ -4,6 +4,7 @@ import "./styles/AboutPage.css";
 function AboutPage() {
   return (
     <div className="about-page">
+      <div className="about-wrapper">
       <h1>Iron Project:</h1>
       <p>
       The Piano Tutor App aims to provide users with a platform for 
@@ -13,7 +14,7 @@ function AboutPage() {
       </p>
       <h2>Iron Team:</h2>
       <p>
-      Paulo and Trix are two aspiring developers at the beginning of 
+      Trix and Paulo are two aspiring developers at the beginning of 
       their journey in the tech world.
       </p>
 
@@ -23,6 +24,7 @@ function AboutPage() {
        to learn and grow. Together, they share a vision of building a 
        bright and successful future as innovative and impactful developers.
       </p>
+      </div>
       <h2>Find them:</h2>
       <div className="team-links">
         <div className="team-member">
