@@ -63,6 +63,7 @@ function SignUpPage() {
           required
         />
         <input
+         <input
           type="password"
           placeholder="Enter Password"
           value={password}
