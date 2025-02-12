@@ -1,7 +1,4 @@
-body {
-    font-family: sans-serif;
-    background-color: #fcfcfc;
-  }
+
   :focus {
     outline: 1px dotted #767676;
     outline-offset: 2px;

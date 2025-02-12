@@ -236,14 +236,14 @@ function PlaybackKeyboard({ track }){
 
   if(track){
     return (
-        <div style={{backgroundColor: "black", borderRadius: "20px", padding: '20px'}}>
-            <div style={{textAlign: 'center', padding: '10px', backgroundColor: 'black', color: "white", margin: '10px', fontSize: '10px'}}>
+        <div className="keys-layout">
+            <div className='play-along-text'>
                 <h3>Play along on your physical piano while being guided by the recorded track or select a track from your list above for live playback</h3>
             <div>
-                <button ref={playRef} onClick={(e)=>playSong(e)}><img style={{width: "50px", height: '50px', marginLeft: "-1px", marginTop: "-1px"}} src={play} alt="play"/></button>
+                <button className="btn-play-playalong" ref={playRef} onClick={(e)=>playSong(e)}><img src={play} alt="play"/></button>
             </div>
             </div>
-            <div className="tkb-piano-container">  
+            <div className="tkb-piano-container" style={{justifySelf: 'center'}}>  
                 <div className="piano-keys">
                     {keys.map((key, index) => (
                         <div key={index}

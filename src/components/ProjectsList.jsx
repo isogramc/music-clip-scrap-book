@@ -13,10 +13,17 @@ function ProjectsList(props){
      const local = "http://localhost:5005/songs";
  
      const handleDelete = async (id) => {
+      let result = [];
       // change the link depending on the environment 
       const url = remote + '/' + id;
          try {
           const res = await axios.delete(url);
+          if(res.status===200){
+            getProjects().then(function (result) {
+              console.log(result.data);
+              setProjects(result.data);
+            });  
+          }
         } catch (error) {
           console.error(error);
         }

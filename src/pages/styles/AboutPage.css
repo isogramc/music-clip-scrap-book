@@ -1,0 +1,84 @@
+.about-page {
+    margin: 80px; 
+    padding: 2em;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+  .about-wrapper {
+      min-width: 800px;
+  }
+
+  .about-wrapper2 {
+    min-width: 800px;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+  .about-page h1 {
+    font-size: 2.1rem;
+    color: #008080;
+    margin-bottom: 1em;
+  }
+
+  .about-page h2 {
+    font-size: 1.8rem;
+    color: #008080;
+    margin-bottom: 0.6em;
+  }
+  .about-page p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5em;
+    text-align: justify;
+  }
+
+  .team-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+  }
+
+  .team-member {
+    text-align: left;
+    background-color: #ffffff;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    box-sizing: border-box;
+  }
+
+  .team-member h2 {
+    font-size: 1.2rem;
+    color: #008080;
+    margin-bottom: 0.5em;
+  }
+
+  .team-member a {
+    display: block;
+    margin: 0.5em 0;
+    text-decoration: none;
+    color: #008080;
+    border: 1px solid #008080;
+    padding: 0.5em;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+
+  .team-member a:hover {
+    background-color: #e0f7f7;
+  }
+
+  @media (max-width: 768px) {
+    .about-page {
+      margin-left: 195px;
+      padding: 1em;
+    }
+
+  }

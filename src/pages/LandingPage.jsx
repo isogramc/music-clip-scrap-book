@@ -10,6 +10,7 @@ function LandingPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState();
   const navigate = useNavigate();
 
   const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
@@ -17,6 +18,14 @@ function LandingPage() {
 
   const setTokens = (data) => {
     localStorage.setItem("tokens", JSON.stringify(data));
+  }
+
+  const setUserIdFromToken=()=>{
+    let tokens = localStorage.getItem("tokens");
+    let tokensObj = JSON.parse(tokens);
+    if(isLoggedIn){
+      setUser(tokensObj.userId);
+    }
   }
 
   const handleLogin = async (e) => {
@@ -69,12 +78,7 @@ function LandingPage() {
           <ProjectsList />
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="footer">
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
-      </footer>
+    
 
       {/* Login Pop-up */}
       {showLogin && (

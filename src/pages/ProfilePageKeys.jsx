@@ -1,7 +1,7 @@
 import PlaybackKeyboard from './../components/PlaybackKeyboard'
 import EditProject from '../components/EditProject'
 import ProjectCard from './../components/ProjectCard'
-import './../App.css'
+import './styles/ProfilePageKeys.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router'
@@ -70,7 +70,7 @@ function ProfilePageKeys(props){
 
     return (
         <div style={{width: '100%'}}>
-            <div style={{justifySelf: 'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center', width: '100%', backgroundColor: 'rgb(7, 77, 120)'}}>
               <ProjectCard id={song.id} image={song.image} title={song.title} description={song.description} />
             </div>
             <h3 style={{justifySelf: 'center'}}>You have recorded {tracks?.length>0?(tracks.length>1?tracks.length:"1 track"):"no tracks"} for {song.title}</h3>
@@ -84,6 +84,7 @@ function ProfilePageKeys(props){
               {showTracks && <SelectableList tracks={tracks} handleSelected={handleSelected}/>}   
             </div>
             <PlaybackKeyboard track={selectedTrack}/>
+            <div className='spacer'></div>
         </div>
     )
 }

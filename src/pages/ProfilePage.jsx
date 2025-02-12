@@ -327,8 +327,8 @@ function ProfilePage({ userId, image, fullName }) {
           </div>
 
           {showProjects && (
-          <div className="contains-proj-list" style={{marginLeft: "15px"}}>
-            <div>
+          <div className="contains-proj-list" style={{marginLeft: "15px", borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', backgroundColor:'black'}}>
+            <div style={{color:'white', padding: '10px'}}>
               Your Existing Projects: Click on a song to go into edit and
               playback mode
             </div>
@@ -355,9 +355,13 @@ function ProfilePage({ userId, image, fullName }) {
             <button onClick={save}>Save</button>
           </div>
         )}
+      
+     
       </div>
 
       {showCreate && <CreateProject userId={currentUser} />}
+
+      <div class="spacer"></div>
 
       {/* Bottom Player */}
       <div className="bottom-player">
@@ -368,7 +372,7 @@ function ProfilePage({ userId, image, fullName }) {
         >
           {showCreate ? "Return" : "Create New"}
         </button>
-        {!selectedProject && <label>Start a recording for any of your songs</label>}
+        {!selectedProject && <label>Start a recording for any of your projects(songs)</label>}
         <ProjectsSelect
           selectProject={selectProject}
           params={{ userId: currentUser }}

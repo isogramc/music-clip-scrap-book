@@ -10,11 +10,13 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/TeamPage';
 import './App.css'
 import './styles/global.css';
+import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
 
   return (
+    <>
       <Routes>
         <Route exact path="/" element={<LandingPage />} />
         <Route 
@@ -29,6 +31,8 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
+      <Footer/>
+    </>
   );
 }
 

@@ -4,15 +4,20 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  margin:0;
+  height: 100%;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root{
+  height: 100%;
 }
 
 * {
@@ -22,9 +27,22 @@
 }
 
 body {
+  font-family: sans-serif;
+  background-color: #fcfcfc;
+  height: 100%;
+}
+
+.footer{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  margin:0;
+}
+
+body {
   padding: 0;
   margin: 0;
-  background-color: #303c48;
+  color: #333;
 }
 
 .main {
@@ -41,73 +59,6 @@ body {
   margin-bottom: 20px;
 }
 
-.tkb-piano-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 4em 1em 1em 1em;
-  border-radius: 0.62em;
-  background-color: #24272e;  
-  box-shadow: 0 2em 4em rgba(7, 0, 53, 0.25);
-  position: relative;
-}
-
-.tkb-white-key {
-  width: 4.37em;
-  height: 17.5em;
-  background-color: #ffffff;
-  border-radius: 0 0 0.3em 0.3em;
-  border: 2px solid #24272e;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.tkb-white-key:hover {
-  background-color: #ebebeb;
-}
-.tkb-black-key {
-  width: 2.5em;
-  height: 10em;
-  border-radius: 0 0 0.3em 0.3em;
-  box-sizing: border-box;
-  position: absolute;
-  background-color: #070a0f;
-  cursor: pointer;
-}
-.tkb-black-key:hover {
-  background-color: #24272e;
-}
-.tkb-black-key:nth-child(1) {
-  left: 4em;
-}
-.tkb-black-key:nth-child(2) {
-  left: 8.37em;
-}
-.tkb-black-key:nth-child(3) {
-  left: 17.12em;
-}
-.tkb-black-key:nth-child(4) {
-  left: 21.5em;
-}
-.tkb-black-key:nth-child(5) {
-  left: 25.87em;
-}
-.tkb-black-key:nth-child(6) {
-  left: 34.62em;
-}
-.tkb-black-key:nth-child(7) {
-  left: 39em;
-}
-.tkb-black-key:nth-child(8) {
-  left: 47.75em;
-}
-.tkb-black-key:nth-child(9) {
-  left: 52.12em;
-}
-.tkb-black-key:nth-child(10) {
-  left: 56.5em;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -115,14 +66,6 @@ a {
 }
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -159,21 +102,5 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .tkb-piano-container {
-      font-size: 0.7em;
-  }
-}
-@media screen and (max-width: 700px) {
-  .tkb-piano-container {
-      font-size: 0.5em;
-  }
-}
-@media screen and (max-width: 500px) {
-  .tkb-piano-container {
-      font-size: 0.3em;
   }
 }

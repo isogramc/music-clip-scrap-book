@@ -48,8 +48,8 @@ function ProjectsSelect({params, selectProject}){
     }
 
     return (
-        <div className="projects-list">
-          <select name="project-select" onChange={e=>handleChange(e)}>
+        <div className="projects-list-opt">
+          <select name="project-select-opt" onChange={e=>handleChange(e)}>
               <option value="">Select project</option>
              {projects.map(project => 
                 <option key={project.id} value={project.id}>{project.title}</option>
