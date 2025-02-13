@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles/SignUpPage.css';
+import sha256 from 'crypto-js/sha256';
+import hmacSHA512 from 'crypto-js/hmac-sha512';
+import Base64 from 'crypto-js/enc-base64';
 
 function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -14,13 +17,22 @@ function SignUpPage() {
   const navigate = useNavigate();
 
   const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
-  const local = "http://localhost:5005/users";
 
   useEffect(() => {
     if (email) {
       setAvatarUrl(`https://robohash.org/${encodeURIComponent(email)}.png?size=200x200`);
     }
   }, [email]);
+
+  function stringToHex(str) {
+    let hex = '';
+    for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i);
+        const hexValue = charCode.toString(16);
+        hex += hexValue.padStart(2, '0');
+    }
+    return hex;
+}
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -37,13 +49,14 @@ function SignUpPage() {
         return;
       }
 
-      
+      const hashDigest = stringToHex(password + "1994ilovechocolate");
+
       // Create new user object
       const newUser = {
         email,
         fullName,
         image: avatarUrl, 
-        password,
+        password: hashDigest,
       };
 
       // Post request new user to the backend
@@ -59,7 +72,7 @@ function SignUpPage() {
 
   return (
     <div className="signup-page">
-      <h2>Sign Up</h2>
+      <h1>Sign Up</h1>
       <form onSubmit={handleSignUp} className="signup-form">
       {avatarUrl && (
         <div className="avatar-preview">

@@ -4,17 +4,19 @@ import axios from 'axios';
 
 function Profile({ render }) {
   const location = useLocation();
-  const [userId, setUserId] = useState(location?.state?.userId);
+  const [userId, setUserId] = useState({});
   const [userData, setUserData] = useState({ id: "", image: '', fullName: '' });
+
   const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
-  const local = "http://localhost:5005/users";
 
   useEffect(() => {
+    const locId = location.state?.userId;
     const userd = localStorage.getItem('tokens');
     const theUser = JSON.parse(userd);
+
     setUserId(theUser.id);
     
-    if (!userId) {
+    if (!userId && !theUser.id) {
         console.error('No userId provided in navigation state');
         return;
     }
@@ -28,7 +30,7 @@ function Profile({ render }) {
       }
     };
 
-    fetchUserData();
+    //fetchUserData();
   }, []);
 
   return <>{userData.image && render(userData)}</>;

@@ -20,7 +20,6 @@ function PlaybackKeyboard({ track }){
     const [colours, setColours] = useState(["red", "blue", "green", "pink", "yellow", "orange", "purple", "cornflowerblue"]);
 
     const remote = `${import.meta.env.VITE_APP_API_URL}/tracks`;
-    const local = "http://localhost:5005/tracks";
 
     const refsById = useMemo(() => {
 		const refs = {}

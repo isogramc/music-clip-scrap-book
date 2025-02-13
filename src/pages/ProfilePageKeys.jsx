@@ -17,7 +17,7 @@ function ProfilePageKeys(props){
     const [selectedTrack, setSelectedTrack] = useState(null);
     const [updateSelection, setupdateSelection] = useState(null);
     const {songId} = useParams();
-    console.log(songId);
+    //console.log(songId);
 
     const navigate = useNavigate();
     
@@ -27,13 +27,10 @@ function ProfilePageKeys(props){
       setCurrentUser(theUser.id);
 
         getSongFile().then(function (result) {
-            console.log(result);
             setSong(result[0].data);
             setTracks(result[1].data)
-            console.log('api', result[1].data.notes);
             if(updateSelection!=null){
               setSelectedTrack(result[1].data[updateSelection]);
-              console.log(result[1].data[updateSelection]);
             }else{
               setSelectedTrack(result[1].data[0]);
             }  
@@ -42,14 +39,11 @@ function ProfilePageKeys(props){
 
      // this is the link to the LIVE SERVER AND get tracks for song > baseUrl/songId?_embed=tracks
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs/${songId}`;
-     const local = `http://localhost:5005/songs/${songId}`;
      const remote2 = `${import.meta.env.VITE_APP_API_URL}/tracks`;
-     const local2 = "http://localhost:5005/tracks/";
  
      async function getSongFile() {
          //console.log("has embed", paramsx.has("_embed")); // true
          const params = {"songId": songId};
-         console.log(params);
          try {
            // change the link depending on the environment 
            const p1 = await axios.get(remote);
@@ -63,7 +57,6 @@ function ProfilePageKeys(props){
        }
 
        const handleSelected = (index) => {
-          console.log(index);
           setSelectedTrack(index);
           setupdateSelection(index);
        }

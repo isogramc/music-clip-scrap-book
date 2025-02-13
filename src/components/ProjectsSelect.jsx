@@ -8,7 +8,6 @@ function ProjectsSelect({params, selectProject}){
 
      // this is the link to the LIVE SERVER
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
-     const local = "http://localhost:5005/songs";
 
 
       async function getProjectsWithParams() {

@@ -10,7 +10,6 @@ function ProjectsList(props){
 
      // this is the link to the LIVE SERVER
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
-     const local = "http://localhost:5005/songs";
  
      const handleDelete = async (id) => {
       let result = [];
@@ -19,7 +18,7 @@ function ProjectsList(props){
          try {
           const res = await axios.delete(url);
           if(res.status===200){
-            getProjects().then(function (result) {
+            getProjectsWithParams().then(function (result) {
               console.log(result.data);
               setProjects(result.data);
             });  
@@ -61,10 +60,11 @@ function ProjectsList(props){
       }
 
       useEffect(() => {
-        if(props.params?.userId>-1){
+        
+        if(props?.params?.userId>-1){
           setMainDisplay(true);
           getProjectsWithParams().then(function (result) {
-            console.log(result.data);
+            //console.log(result.data);
             setProjects(result.data);
           });  
         }else{
@@ -77,13 +77,13 @@ function ProjectsList(props){
          
       }, [])
 
-    if(projects.length===0){
+    if(projects?.length===0){
         return <div>...Loading</div>
     }
 
     return (
         <div className="projects-list">
-             {projects.map(project => <ProjectCard key={project.id} id={project.id} image={project.image} title={project.title} description={project.description} mainDisplay={mainDisplay} handleDelete={handleDelete} />)} 
+             {projects?.map(project => <ProjectCard key={project.id} id={project.id} image={project.image} title={project.title} description={project.description} mainDisplay={mainDisplay} handleDelete={handleDelete} />)} 
         </div>
     )
 }

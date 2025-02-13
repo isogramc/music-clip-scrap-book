@@ -5,10 +5,11 @@ import "./styles/ProfilePage.css";
 import CreateProject from "../components/CreateProject";
 import ProjectsList from "../components/ProjectsList";
 import ProjectsSelect from "../components/ProjectsSelect";
-import Profile from "../components/Profile";
 import Playback from "../components/Playback";
 import VideoTuts from "../components/VideoTuts";
 import axios from "axios";
+import { useContext } from "react";
+import LoginContext from "../context/LoginContext";
 
 const notes = [
   { note: "C3", isBlack: false },
@@ -38,14 +39,12 @@ const notes = [
 ];
 const arr = [];
 
-function ProfilePage({ userId, image, fullName }) {
+function ProfilePage(props) {
   // this is the link to the LIVE SERVER
   let location = useLocation();
   let locationParams = location.state.queryParams;
   const remoteUsers = `${import.meta.env.VITE_APP_API_URL}/users`;
-  const localUsers = "http://localhost:5005/users";
   const remoteTracks = `${import.meta.env.VITE_APP_API_URL}/tracks`;
-  const localTracks = "http://localhost:5005/tracks";
   const [showCreate, setShowCreate] = useState(false);
   const [showRecord, setShowRecord] = useState(false);
   const [player, setPlayer] = useState(null);
@@ -58,39 +57,43 @@ function ProfilePage({ userId, image, fullName }) {
   const [notesPositions, setNotesPositions] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [showPlayback, setShowPlayback] = useState(false);
-  const [myInstructions, setMyInstructions] = useState("");
+  const [myInstructions, setMyInstructions] = useState("left-hand");
   const [showTutorials, setShowTutorials] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
   const [dateToday, setDateToday] = useState("");
   const [challenge, setChallenge] = useState(false);
+  const [solvedC, setSolvedC]= useState(false);
+  const user = useContext(LoginContext);
 
   useEffect(() => {
     let dt = new Date(Date.now());
     let formatDt = dt.toLocaleDateString();
     setDateToday(formatDt);
-    if (!userId) {
+    if (!user) {
       if (locationParams) {
-        setCurrentUser(locationParams);
+        setCurrentUser(locationParams.user.id);
       }
       console.error("userId is not defined");
       return;
+    }else{
+      setCurrentUser(user.id);
     }
 
     // Fetch user from backend API using userId prop
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${remoteUsers}/${userId}`);
-        console.log("User data:", response.data); // Debug log
+        const response = await axios.get(`${remoteUsers}/${user.id}`);
+        //console.log("User data:", response.data); // Debug log
         setCurrentUser(response.data);
         setCurrentUserImage(response.data.image);
-        console.log("User image URL:", response.data.image); // Debug log
+       // console.log("User image URL:", response.data.image); // Debug log
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
     fetchUser();
-  }, [userId]);
+  }, [user.id]);
 
   useEffect(() => {
     Soundfont.instrument(new AudioContext(), "acoustic_grand_piano").then(
@@ -101,8 +104,8 @@ function ProfilePage({ userId, image, fullName }) {
   }, []);
 
   const addNewTrackToProject = async (trackData) => {
-    console.log(trackData);
-    await axios
+    //console.log(trackData);
+    return await axios
       .post(remoteTracks, trackData)
       .then(function (response) {
         console.log(response);
@@ -122,10 +125,6 @@ function ProfilePage({ userId, image, fullName }) {
     }
   };
 
-  const onChange = (e) => {
-    console.log("change", e.target.value);
-  };
-
   const handleRecord = () => {
     setShowRecord(!showRecord);
   };
@@ -141,7 +140,7 @@ function ProfilePage({ userId, image, fullName }) {
     // this depends on the keyboard the user uses to playback songs
     // this has to remain dynamic because of mobile view
     // for the demo we use C3
-    console.log(note);
+    //console.log(note);
     const position = 3;
     let index,
       notePos = note.charAt(note.length - 1);
@@ -179,7 +178,7 @@ function ProfilePage({ userId, image, fullName }) {
     if (note.includes("A#")) {
       replace = "Bb" + notePos;
     }
-    console.log(replace);
+    //console.log(replace);
 
     if (replace.length > 0) {
       for (let i = 0; i < useMobileLayout.length; i++) {
@@ -199,35 +198,36 @@ function ProfilePage({ userId, image, fullName }) {
       }
     }
 
-    console.log(arr);
+    //console.log(arr);
     setNotesPositions(arr);
   }
 
   const save = () => {
     console.log("track added to -> ", selectedProject);
     let durationA = notesText.length * 0.5;
-    let challengGame, solved=null;
-    let solution = [];
+    let challengGame; let solution; let solvedIt;
     if(challenge){
-      if(notesText===solution){
-        challengGame = dateToday;
-        solution = [C3,D3,E3,F3,G3,A3,B3,C4];
-        solved = true;
+      solution = ["C3","D3","E3","F3","G3","A3","B3","C4"];
+      if(notesText.toString()===solution.toString()){
+        solvedIt = true;
+        setSolvedC(true);
+        console.log(solvedIt , notesText.toString()===solution.toString());
+        challengGame = dateToday;  
       }
     }
     let instructions = prompt("Any instructions to add?", "left-hand");
-    setMyInstructions(instructions);
     const track = {
       instructions: instructions,
       notes: notesText,
       songId: selectedProject,
       notesPositions: notesPositions,
       duration: durationA,
-      challengeGame: challengGame.toString(),
+      challengeGame: challengGame,
+      isChallenge: challenge,
       solutionCg: solution,
-      solved: solved
+      solved: solvedIt
     };
-    console.log(track, notesPositions);
+    //console.log(track, notesPositions);
     if (notesPositions.length === notesText.length) {
       setTrack(track);
       addNewTrackToProject(track);
@@ -237,42 +237,26 @@ function ProfilePage({ userId, image, fullName }) {
   };
 
   const selectProject = (id) => {
-    console.log(id);
+    //console.log(id);
     setSelectedProject(id);
   };
 
   const handleCheckChange = (e) => {
     let checked = e.target.checked;
-    setChallenge(!checked)
+    if(checked==true){
+      setChallenge(true);
+    }else{
+      setChallenge(false);
+    }
+   
   };
 
   return (
     <div className="profile-page">
-      {/* Top Navigation Bar */}
 
-      <nav className="top-nav">
-        <div className="profile-section">
-          <div className="profile-circle">
-            <img
-              src={image}
-              alt="User's profile"
-              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "default-image-url"; // Default image on error
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Center: Logo */}
-        <div className="logo"></div>
-
-        {/* Right: Welcome message */}
-        <div className="welcome-message">
-          <p>Welcome {fullName}</p>
-        </div>
-      </nav>
+    <p>This a sub-component, nested in the {user.id} {user.image} {user.loggedIn.toString()} page
+      <img src={user.image} alt="user profile image"/>
+    </p>
 
       {/* Main Content */}
       <div className="main-content">
@@ -301,7 +285,7 @@ function ProfilePage({ userId, image, fullName }) {
         </div>
 
 
-        {showRecord && <div>{fullName} is currently Recording </div>}
+        {showRecord && <div>{user.fullName} is currently Recording </div>}
 
        <div className="workspace-layout" style={{display: 'flex', flexDirection: 'row'}}> 
 
@@ -338,19 +322,17 @@ function ProfilePage({ userId, image, fullName }) {
 
         </div>
         {/* Right Side: Recorded Section */}
-        {showRecord && (
-          
-          <div className="recorded-section">
+        {showRecord && (<div className="recorded-section">
              <label> Select the checkbox if you wish to take part <br/> in the daily challenge with this recording
                 <input type="checkbox" name="challenge" onChange={e=>(handleCheckChange(e))}/>
              </label><br/>
-             {!challenge ? `Daily challenge ${ dateToday } : Record a C major scale (ascending)`: "" }
+             {(challenge===true) ? `Daily challenge ${ dateToday } : Record a C major scale (ascending)`: "" }
             <h3>Recorded Melody</h3>
             <textarea
               style={{ maxHeight: "120px" }}
               value={notesText}
-              onChange={onChange}
               className="recorded-display"
+              readOnly
             ></textarea>
             <button onClick={save}>Save</button>
           </div>
@@ -361,7 +343,7 @@ function ProfilePage({ userId, image, fullName }) {
 
       {showCreate && <CreateProject userId={currentUser} />}
 
-      <div class="spacer"></div>
+      <div className="spacer"></div>
 
       {/* Bottom Player */}
       <div className="bottom-player">

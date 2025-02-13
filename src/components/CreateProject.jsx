@@ -15,7 +15,6 @@ function CreateProject(props){
 
      // this is the link to the LIVE SERVER
      const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
-     const local = "http://localhost:5005/songs";
 
      const create = (e) => {
         e.preventDefault();
