@@ -5,7 +5,9 @@ import * as Tone from "tone";
 import axios from 'axios';
 
 function PlaybackKeyboard({ track }){
+    
     console.log("trackstring", JSON.stringify(track));
+
     const [theTrack, setTheTrack] = useState(track);
     const [keys, setKeys] = useState(Array(24).fill(null));
     // set position of keyboard here - middle C is C4. Lower keyboard by decrementing (limit 0). Increase pitch for higher (limit 9)
@@ -67,27 +69,16 @@ function PlaybackKeyboard({ track }){
     useEffect(() => {
         let theId = track?.id;
         
-        if((parseInt(track))>-1){
-            theId = track;
+        if(theId){
             axios.get(`${remote}/${track}`).then(resp => {
                 console.log(resp.data);
                 setTheTrack(resp.data);
             });
-        }
-
-        if(track){
-            setTrackNotes(track?.notes);
-            setTrackPositions(track?.notesPositions);
-            setDuration(track?.duration)
-            console.log("working", trackNotes, trackPositions);  
-        } else {
             setTrackNotes(theTrack?.notes);
             setTrackPositions(theTrack?.notesPositions);
             setDuration(theTrack?.duration)
             console.log("working", trackNotes, trackPositions);  
         }
-
-        console.log("theTrack", theTrack);
        
         const play = playRef.current;
 
@@ -102,10 +93,9 @@ function PlaybackKeyboard({ track }){
             }
         };
        
-    }, []);
+    }, [theTrack]);
 
 
-    //uncomment for playaable keyboard: note - it is not recommended to have playing and playable keyboard at once
     async function playNote(e){
         //console.log(e.target.id, e.target.getAttribute(['data-position']))
         await Tone.loaded().then(() => {
@@ -133,17 +123,7 @@ function PlaybackKeyboard({ track }){
             let done = false;
 
             console.log("playsong", track, track?.notes?.length);
-
-            if((parseInt(track))>-1){
-                let theId = track;
-                axios.get(`${remote}/${track}`).then(resp => {
-                    console.log(resp.data);
-                    setTheTrack(resp.data);
-                    setTrackNotes(theTrack?.notes);
-                    setTrackPositions(theTrack?.notesPositions);
-                    setDuration(theTrack?.duration)
-                });
-            }
+            console.log("playsong", theTrack, trackNotes?.length);
 
             if(track?.notes?.length){
                 let duration = track?.duration;
@@ -219,8 +199,6 @@ function PlaybackKeyboard({ track }){
                    
                 }
             }
-
-                
       
             Tone.getTransport().start();
             // tone can also ramp up your bpm e.g. to 800 bpm over 10 seconds
@@ -229,16 +207,12 @@ function PlaybackKeyboard({ track }){
 
     }
 
-    if(!track){
-        return <div>...Loading</div>
-    }
-
-  if(track){
+ 
     return (
         <div className="keys-layout">
             <div className='play-along-text'>
                 <h3>Play along on your physical piano while being guided by the recorded track or select a track from your list above for live playback</h3>
-            <div>
+            <div>{track?track.instructions+" queued to play t":""}{theTrack?theTrack.instructions+" queued to play tt":""}<br/>
                 <button className="btn-play-playalong" ref={playRef} onClick={(e)=>playSong(e)}><img src={play} alt="play"/></button>
             </div>
             </div>
@@ -256,7 +230,7 @@ function PlaybackKeyboard({ track }){
             </div>
         </div>
          );
-    }
+    
    
 }
 

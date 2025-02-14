@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function CreateProject(props){
+function CreateProject({userId, callback}){
     const navigate = useNavigate();
-    const { userId } = props;
+    //const { userId } = props;
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -24,7 +24,9 @@ function CreateProject(props){
             userId: userId,
         }
 
-        makePost(dataObj);
+        makePost(dataObj).then((res)=>{
+            callback();
+        });
 
         setFormData({
             title: "",
@@ -34,7 +36,6 @@ function CreateProject(props){
             genre: ""
         });
         
-        navigate("/profile");
     }
 
 

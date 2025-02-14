@@ -41,18 +41,18 @@ function App() {
           <Route exact path="/" element={<LandingPage />} />
           <Route 
             path="/profile" 
-            element={<ProfilePage user={user}/>}
+            element={<ProfilePage setShowLogin={setShowLogin}/>}
           />
           <Route 
-            path="/profile-keys/:songId" 
-            element={<ProfilePageKeys user={user} /> }
+            exact path="/edit/:songId" 
+            element={<ProfilePageKeys setShowLogin={setShowLogin}/> }
           />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-       <Footer/>
+       {!loggedIn && <Footer/>}
       </LoginContext.Provider>
     </>
   );

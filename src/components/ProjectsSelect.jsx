@@ -2,40 +2,8 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import './../App.css'
 
-function ProjectsSelect({params, selectProject}){
-    const [projects, setProjects] = useState([]);
+function ProjectsSelect({projects, selectProject}){
     const [selectedProject, setSelectedProject] = useState("");
-
-     // this is the link to the LIVE SERVER
-     const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
-
-
-      async function getProjectsWithParams() {
-        try {
-          // change the link depending on the environment 
-          return await axios({url: remote, 
-            method: 'get',
-            timeout: 8000,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            params: params
-          })
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      useEffect(() => {
-        console.log(params);
-        if(params?.userId>-1){
-          getProjectsWithParams().then(function (result) {
-            console.log(result.data);
-            setProjects(result.data);
-          });
-        }
-         
-      }, [])
 
     if(projects.length===0){
         return <div>...Loading</div>

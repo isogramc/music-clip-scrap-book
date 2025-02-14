@@ -40,7 +40,7 @@
   
   /* Main Content */
   .main-content {
-    padding: 2rem;
+    padding: 0 2rem;
     gap: 2rem;
     flex:1;
     flex-grow: 1;
@@ -49,6 +49,15 @@
   .spacer{
     height: 160px;
     bottom: 160px;
+  }
+
+  .contains-projects-list-ai{
+    height: 400px;
+    overflow: scroll;
+    margin-left: 15px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    background-color:black;
   }
   
   .piano-container {
@@ -115,7 +124,10 @@
     margin: 0.6rem auto;
     gap: 1rem;
     position: fixed;
-    bottom: 120px;
+    bottom: 60px;
+  }
+  .top-intro{
+    padding-top: 2rem;
   }
   
   /* Bottom Player */
@@ -126,9 +138,7 @@
     padding: 1rem 2rem;
     background-color: #333;
     color: white;
-    position: fixed;
-    width: 100%;
-    bottom: 50px;
+    bottom: 0;
   }
   
   .record-button {
@@ -164,8 +174,6 @@
   }
 
 /* Create Project Css*/
-
-
 
 .create-form .form-section {
   display: flex;

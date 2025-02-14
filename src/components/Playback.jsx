@@ -19,11 +19,16 @@ function Playback({ playSong }){
 
     const playRef = useRef(null);
     const [song, setSong] = useState([]);
+    const [challengeSolved, setChallengeSolved]=useState(false);
 
     useEffect(() => {
         if(playSong?.notes?.length>0){
             console.log(playSong);
             setSong(playSong);
+        }
+
+        if(playSong?.isChallenge&&playSong.solved){
+            setChallengeSolved("Solved");
         }
 
         const play = playRef.current;
@@ -43,11 +48,11 @@ function Playback({ playSong }){
     async function handleClick () {
         const now = Tone.now();
         let noteLength = 0;
-        console.log(song.notes);
-        console.log(song.instructions);
+        //console.log(song.notes);
+        //console.log(song.instructions);
         if(song.notes?.length>0){
             for(let i=0; i<song.notes.length; i++){
-                console.log(song.notes[i]);
+                //console.log(song.notes[i]);
                  //play a note every quarter-note in succession
                 samplerA.triggerAttackRelease(song.notes[i], "8n", now + noteLength);
                 noteLength += 0.5;
@@ -78,7 +83,7 @@ function Playback({ playSong }){
 
     return (
     <div style={{display: 'flex', flexDirection: "column", justifyItems: 'center', padding: "5px"}}>
-        <h3>{playSong.instructions}</h3>
+        <h3>{playSong.isChallenge?playSong.challengeGame+": "+challengeSolved:playSong.instructions}</h3>
         <div style={{textAlign:"center"}}><img src={songfile} alt="soundfile" style={{width: '55px'}}/></div>
         <div style={{display: "flex", justifySelf: 'center', alignItems: "center"}}>
             <button style={{borderRadius: "50%", width: "50px", height: '50px', margin:0, padding:0}} ref={playRef}>

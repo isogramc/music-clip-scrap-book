@@ -1,11 +1,11 @@
-import { useState } from "react"
-import { useContext } from "react";
+import { useState, useContext } from "react"
+import { Link } from "react-router";
 import LoginContext from "../context/LoginContext";
 
 function Navbar({logOut, setShowLogin}){
 
   const user = useContext(LoginContext);
-  console.log(JSON.stringify(user));
+  //console.log(JSON.stringify(user));
 
     const handleShowLogin = () => {
         setShowLogin(true);
@@ -18,7 +18,7 @@ function Navbar({logOut, setShowLogin}){
      if(user.id===""){
       return (
           <nav className="navbar">
-          <div className="logo"></div>
+          <Link to="/"><div className="logo"></div></Link>
           <div className="nav-links">
             <button onClick={handleShowLogin} className="login-btn">
               Login
@@ -36,7 +36,7 @@ function Navbar({logOut, setShowLogin}){
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}/> }
         </div>
         <div className="welcome-message">
-          <p>Welcome {user.fullName}</p>
+          <p>Welcome<br/> {user.fullName}</p>
         </div>
       </div>
 

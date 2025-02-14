@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Soundfont from "soundfont-player";
 import "./styles/ProfilePage.css";
 import CreateProject from "../components/CreateProject";
-import ProjectsList from "../components/ProjectsList";
+import ProjectCardAI from './../components/ProjectCardAI'
 import ProjectsSelect from "../components/ProjectsSelect";
 import Playback from "../components/Playback";
 import VideoTuts from "../components/VideoTuts";
@@ -37,63 +37,54 @@ const notes = [
   { note: "A#4", isBlack: true },
   { note: "B4", isBlack: false },
 ];
-const arr = [];
 
-function ProfilePage(props) {
+var arr = [];
+
+function ProfilePage({setShowLogin}) {
+
+  const user = useContext(LoginContext);
+
   // this is the link to the LIVE SERVER
-  let location = useLocation();
-  let locationParams = location.state.queryParams;
   const remoteUsers = `${import.meta.env.VITE_APP_API_URL}/users`;
   const remoteTracks = `${import.meta.env.VITE_APP_API_URL}/tracks`;
+  // this is the link to songs
+  const remote = `${import.meta.env.VITE_APP_API_URL}/songs`;
+
   const [showCreate, setShowCreate] = useState(false);
   const [showRecord, setShowRecord] = useState(false);
   const [player, setPlayer] = useState(null);
   const [audio, setAudio] = useState(false);
   const [track, setTrack] = useState(null);
   const [song, setSong] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [currentUserImage, setCurrentUserImage] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [notesText, setNotesText] = useState("");
   const [notesPositions, setNotesPositions] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [showPlayback, setShowPlayback] = useState(false);
-  const [myInstructions, setMyInstructions] = useState("left-hand");
   const [showTutorials, setShowTutorials] = useState(false);
   const [showProjects, setShowProjects] = useState(true);
   const [dateToday, setDateToday] = useState("");
+  const [solvedC, setSolvedC] = useState(false);
   const [challenge, setChallenge] = useState(false);
-  const [solvedC, setSolvedC]= useState(false);
-  const user = useContext(LoginContext);
-
+  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+ 
   useEffect(() => {
+    if(!user.loggedIn){
+      navigate("/");
+      setShowLogin(true);
+    }
+    
     let dt = new Date(Date.now());
     let formatDt = dt.toLocaleDateString();
     setDateToday(formatDt);
-    if (!user) {
-      if (locationParams) {
-        setCurrentUser(locationParams.user.id);
-      }
-      console.error("userId is not defined");
-      return;
-    }else{
-      setCurrentUser(user.id);
-    }
+    setCurrentUserId(user.id);
 
-    // Fetch user from backend API using userId prop
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`${remoteUsers}/${user.id}`);
-        //console.log("User data:", response.data); // Debug log
-        setCurrentUser(response.data);
-        setCurrentUserImage(response.data.image);
-       // console.log("User image URL:", response.data.image); // Debug log
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUser();
-  }, [user.id]);
+    getProjectsWithParams().then(function (result) {
+      console.log(result.data);
+      setProjects(result.data);
+    })
+  }, []);
 
   useEffect(() => {
     Soundfont.instrument(new AudioContext(), "acoustic_grand_piano").then(
@@ -203,9 +194,10 @@ function ProfilePage(props) {
   }
 
   const save = () => {
-    console.log("track added to -> ", selectedProject);
+    console.log("track added to -> ", selectedProject, notesPositions, notesText);
+    console.log("challenge -> ", challenge);
     let durationA = notesText.length * 0.5;
-    let challengGame; let solution; let solvedIt;
+    let challengGame=null; let solution=[]; let solvedIt=false;
     if(challenge){
       solution = ["C3","D3","E3","F3","G3","A3","B3","C4"];
       if(notesText.toString()===solution.toString()){
@@ -215,7 +207,7 @@ function ProfilePage(props) {
         challengGame = dateToday;  
       }
     }
-    let instructions = prompt("Any instructions to add?", "left-hand");
+    let instructions = prompt("Any instructions to add?", "e.g. left-hand or daily challenge");
     const track = {
       instructions: instructions,
       notes: notesText,
@@ -233,6 +225,7 @@ function ProfilePage(props) {
       addNewTrackToProject(track);
       setShowRecord(false);
       setShowPlayback(true);
+      arr=[];
     }
   };
 
@@ -248,24 +241,66 @@ function ProfilePage(props) {
     }else{
       setChallenge(false);
     }
-   
   };
+
+  const handleDelete = async (id) => {
+    console.log(id);
+    let result = [];
+    // change the link depending on the environment 
+    const url = remote + '/' + id;
+       try {
+        const res = await axios.delete(url);
+        if(res.status===200){
+          getProjectsWithParams().then(function (result) {
+            console.log(result.data);
+            setProjects(result.data);
+          });  
+        }
+      } catch (error) {
+        console.error(error);
+      }
+   }
+
+  async function getProjectsWithParams() {
+    const params = {userId: user.id};
+    try {
+      // change the link depending on the environment 
+      return await axios({url: remote, 
+        method: 'get',
+        timeout: 8000,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        params: params
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const callback = () => {
+    getProjectsWithParams().then(function (result) {
+      console.log(result.data);
+      setProjects(result.data);
+    })
+  }
 
   return (
     <div className="profile-page">
 
-    <p>This a sub-component, nested in the {user.id} {user.image} {user.loggedIn.toString()} page
-      <img src={user.image} alt="user profile image"/>
-    </p>
-
       {/* Main Content */}
       <div className="main-content">
         {/* Left Side: Piano */}
-        <div> *Daily challenge { dateToday } : Record a C major scale (ascending) <br/>
-          <h1>Welcome to your workspace </h1>
+        <div className="top-intro">
+        <div className="daily-challenge"> *Daily challenge { dateToday } : Record a C major scale (ascending) <br/>
+          <div style={{display: 'flex', flexDirection:'row'}}><h1>Welcome to your workspace </h1><img src={user.image}
+            alt="User profile image"
+            style={{ marginLeft: "15px", width: "50px", height: "50px", borderRadius: "50%" }}/></div>
           Play on the piano, Record a track, Access Tutorials picked for you - all in one workspace<br/>
           Don't know how do do the challenge? Watch a tutorial on the subject
         </div>
+        </div>
+       
 
         <div>
           <button
@@ -311,12 +346,17 @@ function ProfilePage(props) {
           </div>
 
           {showProjects && (
-          <div className="contains-proj-list" style={{marginLeft: "15px", borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', backgroundColor:'black'}}>
+          <div className="contains-projects-list-ai" >
             <div style={{color:'white', padding: '10px'}}>
               Your Existing Projects: Click on a song to go into edit and
               playback mode
             </div>
-            <ProjectsList params={{ userId: currentUser }} />
+
+            <div className="projects-list">
+             {projects?.map(project => 
+                  <ProjectCardAI key={project.id} id={project.id} image={project.image} title={project.title} description={project.description} handleDelete={handleDelete} /> 
+             )} 
+        </div>
           </div>
         )}
 
@@ -341,7 +381,7 @@ function ProfilePage(props) {
      
       </div>
 
-      {showCreate && <CreateProject userId={currentUser} />}
+      {showCreate && <CreateProject userId={user.id} callback={callback}/>}
 
       <div className="spacer"></div>
 
@@ -356,8 +396,8 @@ function ProfilePage(props) {
         </button>
         {!selectedProject && <label>Start a recording for any of your projects(songs)</label>}
         <ProjectsSelect
-          selectProject={selectProject}
-          params={{ userId: currentUser }}
+          projects={projects}
+          selectProject={selectProject}    
         />
         {selectedProject && (
           <div>
@@ -365,7 +405,7 @@ function ProfilePage(props) {
               Record
             </button>
             <div className="playback-controls">
-              {showPlayback && <Playback playSong={track} />}
+              {showPlayback && <div><Playback playSong={track} /><button onClick={e=>setShowPlayback(!showPlayback)}>Close</button></div>}
             </div>
           </div>
         )}

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link } from 'react-router'
+import { useNavigate, Navigate } from "react-router-dom";
 import authMethods from "./../services/auth.service";
 import sha256 from 'crypto-js/sha256';
 import hmacSHA512 from 'crypto-js/hmac-sha512';
@@ -13,21 +14,10 @@ function Login({ setShowLogin, setLoggedInFunct }){
     const [aUser, setAUser] = useState(null);
     const navigate = useNavigate();
 
-    const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
-
     const setTokens = (data) => {
        setLoggedInFunct(data);
        localStorage.setItem("tokens", JSON.stringify(data));
     }
-
-    // function hex_to_ascii(str1) {
-    //   var hex = str1.toString();
-    //   var str = '';
-    //   for (var n = 0; n < hex.length; n += 2) {
-    //       str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
-    //   }
-    //   return str;
-    // }
 
   function stringToHex(str) {
       let hex = '';
@@ -47,34 +37,34 @@ function Login({ setShowLogin, setLoggedInFunct }){
     const handleLogin = async (e) => {
       e.preventDefault();
       setError("");
-      console.log("login");
 
       const hashDigest = stringToHex(password + "1994ilovechocolate");
-      // const compareVal = hmacSHA512(hashDigest, "ilovechocolate");
   
-      try {
-        authMethods.login({email: email, password: password}).then(response=>{
-            const user = response.find((u) => 
-                u.email === email && u.password === hashDigest
-            );
+      setTimeout(() => {
+        try {
+        authMethods.login({email: email, password: hashDigest}).then(response=>{
+            
+          const user = response.find((u) => 
+              u.email === email && u.password === hashDigest
+          );
 
-            setAUser(user);
-        }).then(()=>{
+          setAUser(user);
 
           if (aUser) {
             console.log(aUser);
             setTokens(aUser);
-            navigate("/profile", { state: { user: aUser, loggedIn: true } });
+            navigate("/profile");
             handleClose();
           } else {
             setError("Invalid email or password.");
           }
-
-        });
-
-      } catch (err) {
-        setError("Login failed. Please try again.");
-      }
+          
+      });
+    } catch (err) {
+      setError("Login failed. Please try again.");
+    }
+      }, "1000");
+      
     };
   
     const closeLoginPopup = () => {
@@ -89,7 +79,7 @@ function Login({ setShowLogin, setLoggedInFunct }){
         <>
             <div className="login-popup-overlay" onClick={handleClose}>
               <div className="login-popup" onClick={(e) => e.stopPropagation()}>
-                <button className="close-button" onClick={closeLoginPopup}>X</button>
+                <div className="btn-close-pop"><button className="close-button" onClick={closeLoginPopup}>X</button></div>
                 <h1>Login</h1>
                 <form onSubmit={handleLogin} className="login-form">
                   <input
@@ -109,9 +99,9 @@ function Login({ setShowLogin, setLoggedInFunct }){
                   <button type="submit">Login</button>
                 </form>
                 {error && <p className="error-message">{error}</p>}
-                <p className="signup-option">
-                  Don't have an account? <Link to="/signup">Sign up here</Link>
-                </p>
+                <div className="signup-option">
+                  Don't have an account? <Link to="/signup"><p onClick={handleClose}>Sign up here</p></Link>
+                </div>
               </div>
             </div>
           </>
