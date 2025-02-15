@@ -36,24 +36,27 @@ function Login({ setShowLogin, setLoggedInFunct }){
     const handleLogin = async (e) => {
       e.preventDefault();
       setError("");
-      console.log("done=>", email, password);
+      
+      
        try {
         const hashDigest = stringToHex(password + "1994ilovechocolate");
         const response = await axios.get(remote);
 
         console.log(response);
+        console.log("done=>", email, hashDigest);
+
         const user = response.data.find(
-          (u) => u.email === email && u.password === hashDigest
-        );
+          (u) => u.email === email && u.password == hashDigest
+        )
+          setAUser(user);
 
-        setAUser(user);
-
-        if (aUser) {
-          console.log(aUser);
-          setTokens(aUser);
-          navigate("/profile");
-          handleClose();
-        }
+          if (aUser) {
+            console.log(aUser);
+            setTokens(aUser);
+            navigate("/profile");
+            handleClose();
+          }
+ 
       } catch (err) {
         setError("Login failed. Please try again.");
       }
