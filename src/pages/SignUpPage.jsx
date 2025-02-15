@@ -49,14 +49,14 @@ function SignUpPage() {
         return;
       }
 
-      const hashDigest = stringToHex(password + "1994ilovechocolate");
+      //const hashDigest = stringToHex(password + "1994ilovechocolate");
 
       // Create new user object
       const newUser = {
         email,
         fullName,
         image: avatarUrl, 
-        password: hashDigest,
+        password,
       };
 
       // Post request new user to the backend

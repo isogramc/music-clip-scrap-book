@@ -39,20 +39,20 @@ function Login({ setShowLogin, setLoggedInFunct }){
       
       
        try {
-        const hashDigest = stringToHex(password + "1994ilovechocolate");
+        //const hashDigest = stringToHex(password + "1994ilovechocolate");
         const response = await axios.get(remote);
 
         console.log(response);
-        console.log("done=>", email, hashDigest);
+        console.log("done=>", email, password);
 
         const user = response.data.find(
-          (u) => u.email === email && u.password == hashDigest
+          (u) => u.email === email && u.password == password
         )
-          setAUser(user);
+          //setAUser(user);
 
-          if (aUser) {
-            console.log(aUser);
-            setTokens(aUser);
+          if (user) {
+            console.log(user);
+            setTokens(user);
             navigate("/profile");
             handleClose();
           }
