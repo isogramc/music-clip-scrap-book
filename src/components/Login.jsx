@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { Link } from 'react-router'
 import { useNavigate, Navigate } from "react-router-dom";
-import authMethods from "./../services/auth.service";
-import sha256 from 'crypto-js/sha256';
-import hmacSHA512 from 'crypto-js/hmac-sha512';
-import Base64 from 'crypto-js/enc-base64';
+import axios from 'axios';
 
 function Login({ setShowLogin, setLoggedInFunct }){
 
@@ -13,6 +10,8 @@ function Login({ setShowLogin, setLoggedInFunct }){
     const [error, setError] = useState("");
     const [aUser, setAUser] = useState(null);
     const navigate = useNavigate();
+
+    const remote = `${import.meta.env.VITE_APP_API_URL}/users`;
 
     const setTokens = (data) => {
        setLoggedInFunct(data);
@@ -37,34 +36,27 @@ function Login({ setShowLogin, setLoggedInFunct }){
     const handleLogin = async (e) => {
       e.preventDefault();
       setError("");
+      console.log("done=>", email, password);
+       try {
+        const hashDigest = stringToHex(password + "1994ilovechocolate");
+        const response = await axios.get(remote);
 
-      const hashDigest = stringToHex(password + "1994ilovechocolate");
-  
-      setTimeout(() => {
-        try {
-        authMethods.login({email: email, password: hashDigest}).then(response=>{
-            
-          const user = response.find((u) => 
-              u.email === email && u.password === hashDigest
-          );
+        console.log(response);
+        const user = response.data.find(
+          (u) => u.email === email && u.password === hashDigest
+        );
 
-          setAUser(user);
+        setAUser(user);
 
-          if (aUser) {
-            console.log(aUser);
-            setTokens(aUser);
-            navigate("/profile");
-            handleClose();
-          } else {
-            setError("Invalid email or password.");
-          }
-          
-      });
-    } catch (err) {
-      setError("Login failed. Please try again.");
-    }
-      }, "1000");
-      
+        if (aUser) {
+          console.log(aUser);
+          setTokens(aUser);
+          navigate("/profile");
+          handleClose();
+        }
+      } catch (err) {
+        setError("Login failed. Please try again.");
+      }
     };
   
     const closeLoginPopup = () => {
