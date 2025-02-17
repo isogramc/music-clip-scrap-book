@@ -1,5 +1,7 @@
 # Music clip scrapbook/Piano tutor
 
+:: category - hobby; personal project management; learn a new skill app; work on music theory, learn music theory, brush up on music theory ::
+
 This is the front end application for the music clip scrap book project (aka Piano Tutor app). We used an external API called tone.js - a Web Audio framework for creating interactive music in the browser - to create an interactive music experience.
 
 It is a SPA React project with mock backend/external API integration. The following is a link to the [JSON server backend](https://github.com/isogramc/music-sb-json-backend) also hosted here on Github. It is a REST API and our React front end interacts with it using standard HTTP methods (GET, POST, PUT, and DELETE).
